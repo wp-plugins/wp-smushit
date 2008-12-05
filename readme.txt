@@ -38,7 +38,7 @@ Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on 
 
 == Installation ==
 
-1. Upload the `wp-smushit` to your `/wp-content/plugins/` directory.
+1. Upload the `wp-smushit` plugin to your `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. Done!
 

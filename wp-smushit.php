@@ -6,11 +6,11 @@
  */
 /*
 Plugin Name: WP Smush.it
-Plugin URI: http://dialect.ca/code/wp-smushit
+Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
-Author: Alex Dunae
+Author: Dialect
 Version: 1.0.0
-Author URI: http://dunae.ca/
+Author URI: http://dialect.ca/?wp_smush_it
 */
 
 require_once('JSON/JSON.php');
