@@ -183,7 +183,10 @@ function wp_smushit_columns($defaults) {
 function wp_smushit_custom_column($column_name, $id) {
     if( $column_name == 'smushit' ) {
     	$data = wp_get_attachment_metadata($id);
-    	print isset($data['wp_smushit']) ? $data['wp_smushit'] : __('Not processed', WP_SMUSHIT_DOMAIN);
+    	if ( isset($data['wp_smushit']) && !empty($data['wp_smushit']) )
+    		print $data['wp_smushit'];
+    	else
+    		print __('Not processed', WP_SMUSHIT_DOMAIN);
     }
 }
 
