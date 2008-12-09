@@ -9,11 +9,11 @@
 <?php wp_nonce_field('update-options'); ?>
 <table class="form-table">
 <tr valign="top">
-<th scope="row">When Smush.it suggests converting a GIF to a PNG file&hellip;</th>
+<th scope="row"><?php _e('When Smush.it suggests converting a GIF to a PNG file&hellip;', WP_SMUSHIT_DOMAIN); ?></th>
 <td>
 	<select name="wp_smushit_gif_to_png" id="wp_smushit_gif_to_png">
-		<option value="1"<?php echo  $wp_smushit_gif_to_png == 1 ? ' selected="selected"' : ''; ?>>Overwrite the GIF with a PNG</option>
-		<option value="0"<?php echo  $wp_smushit_gif_to_png == 0 ? ' selected="selected"' : ''; ?>>Leave the GIF alone</option>
+		<option value="1"<?php echo  $wp_smushit_gif_to_png == 1 ? ' selected="selected"' : ''; ?>><?php _e('Overwrite the GIF with a PNG', WP_SMUSHIT_DOMAIN); ?></option>
+		<option value="0"<?php echo  $wp_smushit_gif_to_png == 0 ? ' selected="selected"' : ''; ?>><?php _e('Leave the GIF alone', WP_SMUSHIT_DOMAIN); ?></option>
 	</select>
 </td>
 </tr>

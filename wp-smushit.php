@@ -24,6 +24,8 @@ define('SMUSHIT_REQ_URL', 'http://smush.it/ws.php?img=%s');
 
 define('SMUSHIT_BASE_URL', 'http://smush.it/');
 
+define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
+
 define('WP_SMUSHIT_GIF_TO_PNG', intval(get_option('wp_smushit_gif_to_png')));
 
 if ( !defined('WP_CONTENT_URL') )
@@ -43,7 +45,7 @@ add_filter('wp_generate_attachment_metadata', 'wp_smushit_resize_from_meta_data'
 add_filter('manage_media_columns', 'wp_smushit_columns');
 add_action('manage_media_custom_column', 'wp_smushit_custom_column', 10, 2);
 add_action('admin_menu', 'wp_smushit_add_pages');
-
+add_action('admin_init', 'wp_smushit_init');
 
 /**
  * Process an image with Smush.it.
@@ -56,7 +58,7 @@ add_action('admin_menu', 'wp_smushit_add_pages');
 function wp_smushit($file) {
 	// dont't run on localhost
 	if( $_SERVER['SERVER_ADDR'] == '127.0.0.1' )
-		return array($file, 'Not processed (local file)');
+		return array($file, __('Not processed (local file)', WP_SMUSHIT_DOMAIN));
 
 	$url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $file );
 	$req = sprintf( SMUSHIT_REQ_URL, urlencode( $url ) );
@@ -64,7 +66,7 @@ function wp_smushit($file) {
 	$fh = @fopen( $req, 'r' ); // post to Smush.it
 
 	if ( !$fh )
-		return array($file, 'Error posting to Smush.it');
+		return array($file, __('Error posting to Smush.it', WP_SMUSHIT_DOMAIN));
 		
 	$data = stream_get_contents( $fh );
 	fclose( $fh );
@@ -78,10 +80,10 @@ function wp_smushit($file) {
 	}
 
 	if ( intval($data->dest_size) == -1 )
-		return array($file, 'No savings');
+		return array($file, __('No savings', WP_SMUSHIT_DOMAIN));
 
 	if ( !$data->dest )
-		return array($file, 'Error: ' . $data->error);
+		return array($file, __('Error: ', WP_SMUSHIT_DOMAIN) . $data->error);
 
 	// download the processed image to a temp file
 	$processed_url = SMUSHIT_BASE_URL . $data->dest;
@@ -103,7 +105,11 @@ function wp_smushit($file) {
 	
 	@rename( $temp_file, $file );
 	
-	return array($file, 'Reduced by ' . $data->percent . '%');
+	$results_msg = sprintf(__("Reduced by %01.1f%%", WP_SMUSHIT_DOMAIN), $data->percent);
+	
+	
+	
+	return array($file, $results_msg);
 }
 
 
@@ -166,7 +172,7 @@ function wp_smushit_resize_from_meta_data($meta) {
  * the `manage_media_columns` hook.
  */
 function wp_smushit_columns($defaults) {
-	$defaults['smushit'] = __('Smush.it');
+	$defaults['smushit'] = 'Smush.it';
 	return $defaults;
 }
 
@@ -177,7 +183,7 @@ function wp_smushit_columns($defaults) {
 function wp_smushit_custom_column($column_name, $id) {
     if( $column_name == 'smushit' ) {
     	$data = wp_get_attachment_metadata($id);
-    	print isset($data['wp_smushit']) ? $data['wp_smushit'] : 'Not processed';
+    	print isset($data['wp_smushit']) ? $data['wp_smushit'] : __('Not processed', WP_SMUSHIT_DOMAIN);
     }
 }
 
@@ -196,8 +202,12 @@ function wp_smushit_install() {
 	add_option('wp_smushit_gif_to_png', 0);
 }
 
+function wp_smushit_init() {
+	load_plugin_textdomain(WP_SMUSHIT_DOMAIN);
+}
+
 function wp_smushit_add_pages() {
-	add_options_page('WP Smush.it Options', 'WP Smush.it', 8, dirname(__FILE__) . '/options.php');
+	add_options_page(__('WP Smush.it Options', WP_SMUSHIT_OPTIONS), 'WP Smush.it', 8, dirname(__FILE__) . '/options.php');
 }
 
 function wp_smushit_options() {
