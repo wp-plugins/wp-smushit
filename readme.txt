@@ -1,6 +1,6 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.0.2
+Version: 1.1
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae
@@ -27,10 +27,11 @@ Every image you add to a page or post will be automatically run through Smush.it
 
 *N. B. In some cases GIFs should be replaced with PNG files.  You can control this behaviour on the `Options` page.  It is off by default.*
 
+= Existing images =
+You can also run your existing images through Smush.it via the WordPress `Media Library`.  Click on the `Smush.it now!` link for any image you'd like to smush.
+
 = Privacy = 
 Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on their <a href="http://smush.it/faq.php">FAQ</a>).
-
-
 
 == Screenshots ==
 

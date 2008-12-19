@@ -1,0 +1,13 @@
+=== WP Smush.it Release History ===
+
+== 1.1 ==
+* improved handling of errors from Smush.it
+
+== 1.0.2 ==
+* added 'Not processed' status message when browsing media library
+
+== 1.0.1 ==
+* added i10n functions
+
+== 1.0 ==
+* first edition

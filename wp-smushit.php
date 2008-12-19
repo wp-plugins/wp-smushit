@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.0.2
+ * @version 1.1
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.0.2
+Version: 1.1
 Author URI: http://dialect.ca/?wp_smush_it
 */
 
@@ -27,6 +27,8 @@ define('SMUSHIT_BASE_URL', 'http://smush.it/');
 define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
 
 define('WP_SMUSHIT_GIF_TO_PNG', intval(get_option('wp_smushit_gif_to_png')));
+
+define('WP_SMUSHIT_PLUGIN_DIR', dirname(plugin_basename(__FILE__)));
 
 if ( !defined('WP_CONTENT_URL') )
 	define('WP_CONTENT_URL', get_option('url') . '/wp-content');
@@ -71,6 +73,12 @@ function wp_smushit($file) {
 	$data = stream_get_contents( $fh );
 	fclose( $fh );
 
+
+	// make sure the response looks like JSON -- added 2008-12-19 when 
+	// Smush.it was returning PHP warnings before the JSON
+	if ( strpos(trim($data), '{') != 0 )
+		return array($file, __('Bad response from Smush.it', WP_SMUSHIT_DOMAIN));
+
 	// read the JSON response
 	if ( function_exists('json_decode') ) {
 		$data = json_decode( $data );
@@ -78,12 +86,14 @@ function wp_smushit($file) {
 		$json = new Services_JSON();
 		$data = $json->decode($data);
 	}
-
+	
 	if ( intval($data->dest_size) == -1 )
 		return array($file, __('No savings', WP_SMUSHIT_DOMAIN));
 
-	if ( !$data->dest )
-		return array($file, __('Error: ', WP_SMUSHIT_DOMAIN) . $data->error);
+	if ( !$data->dest ) {
+		$err = ($data->error ? $data->error : 'unknown');
+		return array($file, __('Error: ', WP_SMUSHIT_DOMAIN) . $err);
+	}
 
 	// download the processed image to a temp file
 	$processed_url = SMUSHIT_BASE_URL . $data->dest;
@@ -187,6 +197,11 @@ function wp_smushit_custom_column($column_name, $id) {
     		print $data['wp_smushit'];
     	else
     		print __('Not processed', WP_SMUSHIT_DOMAIN);
+    	
+    	printf("<br><a href=\"admin.php?page=%s/smush.php&amp;attachment_ID=%d&amp;noheader\">%s</a>",
+		         WP_SMUSHIT_PLUGIN_DIR,
+		         $id,
+		         __('Smush.it now!', WP_SMUSHIT_DOMAIN));
     }
 }
 
