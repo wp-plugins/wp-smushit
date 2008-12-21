@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.1
+ * @version 1.0.2
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.1
+Version: 1.0.2
 Author URI: http://dialect.ca/?wp_smush_it
 */
 
@@ -17,7 +17,7 @@ require_once('JSON/JSON.php');
 
 
 /**
- * Constants 
+ * Constants
  */
 
 define('SMUSHIT_REQ_URL', 'http://smush.it/ws.php?img=%s');
@@ -31,7 +31,7 @@ define('WP_SMUSHIT_GIF_TO_PNG', intval(get_option('wp_smushit_gif_to_png')));
 define('WP_SMUSHIT_PLUGIN_DIR', dirname(plugin_basename(__FILE__)));
 
 if ( !defined('WP_CONTENT_URL') )
-	define('WP_CONTENT_URL', get_option('url') . '/wp-content');
+	define('WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
 
 if ( !defined('WP_CONTENT_DIR') )
 	define('WP_CONTENT_DIR', ABSPATH . 'wp-content' );
@@ -62,21 +62,33 @@ function wp_smushit($file) {
 	if( $_SERVER['SERVER_ADDR'] == '127.0.0.1' )
 		return array($file, __('Not processed (local file)', WP_SMUSHIT_DOMAIN));
 
-	$url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $file );
-	$req = sprintf( SMUSHIT_REQ_URL, urlencode( $url ) );
+
+	$file_path = $file;
+	$file_url = '';
+
+	if ( 0 === strpos($file, WP_CONTENT_DIR) ) {
+		// WordPress < 2.6.2: $file is already an absolute path
+		$file_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $file );
+	} else {
+		// WordPress >= 2.6.2: determine the absolute $file_path and $file_url
+		$uploads = wp_upload_dir();
+		$file_path = trailingslashit( $uploads['basedir'] ) . $file;
+		$file_url  = trailingslashit( $uploads['baseurl'] ) . $file;
+	}
+
+	$req = sprintf( SMUSHIT_REQ_URL, urlencode( $file_url ) );
 
 	$fh = @fopen( $req, 'r' ); // post to Smush.it
 
 	if ( !$fh )
 		return array($file, __('Error posting to Smush.it', WP_SMUSHIT_DOMAIN));
-		
+
 	$data = stream_get_contents( $fh );
 	fclose( $fh );
 
-
-	// make sure the response looks like JSON -- added 2008-12-19 when 
+	// make sure the response looks like JSON -- added 2008-12-19 when
 	// Smush.it was returning PHP warnings before the JSON
-	if ( strpos(trim($data), '{') != 0 )
+	if ( strpos( trim($data), '{' ) != 0 )
 		return array($file, __('Bad response from Smush.it', WP_SMUSHIT_DOMAIN));
 
 	// read the JSON response
@@ -86,19 +98,19 @@ function wp_smushit($file) {
 		$json = new Services_JSON();
 		$data = $json->decode($data);
 	}
-	
+
 	if ( intval($data->dest_size) == -1 )
 		return array($file, __('No savings', WP_SMUSHIT_DOMAIN));
 
 	if ( !$data->dest ) {
-		$err = ($data->error ? $data->error : 'unknown');
-		return array($file, __('Error: ', WP_SMUSHIT_DOMAIN) . $err);
+		$err = ($data->error ? $data->error : 'Unknown error');
+		return array($file, __($err, WP_SMUSHIT_DOMAIN) );
 	}
 
 	// download the processed image to a temp file
 	$processed_url = SMUSHIT_BASE_URL . $data->dest;
 
-	$temp_file = tempnam( WP_CONTENT_DIR . '/uploads', '___' );
+	$temp_file = tempnam( WP_CONTENT_DIR, '___' );
 
 	if( !@copy( $processed_url, $temp_file ) )
 		return false;
@@ -108,17 +120,16 @@ function wp_smushit($file) {
 	// check if Smush.it converted a GIF to a PNG
 	if( WP_SMUSHIT_GIF_TO_PNG == 1 && wp_smushit_did_gif_to_png($file, $data->dest) ) {
 		$file = preg_replace('/.gif$/i', '.png', $file);
+		$file_path = preg_replace('/.gif$/i', '.png', $file_path);
 
 		if ( has_filter('wp_update_attachment_metadata', 'wp_smushit_update_attachment') === false )
 			add_filter('wp_update_attachment_metadata', 'wp_smushit_update_attachment', 10, 2);
 	}
-	
-	@rename( $temp_file, $file );
-	
+
+	@rename( $temp_file, $file_path );
+
 	$results_msg = sprintf(__("Reduced by %01.1f%%", WP_SMUSHIT_DOMAIN), $data->percent);
-	
-	
-	
+
 	return array($file, $results_msg);
 }
 
@@ -127,12 +138,12 @@ function wp_smushit($file) {
  * Update the attachment's meta data after being smushed.
  *
  * This is only needed when GIFs become PNGs so we add the filter near
- * the end of `wp_smushit()`. It's used by the `wp_update_attachment_metadata` 
+ * the end of `wp_smushit()`. It's used by the `wp_update_attachment_metadata`
  * hook, which is called after the `wp_generate_attachment_metadata` on upload.
  */
 function wp_smushit_update_attachment($data, $ID) {
 	$orig_file = get_attached_file( $ID );
-	
+
 	if( wp_smushit_did_gif_to_png($orig_file,  $data['file']) ) {
 		update_attached_file( $ID, $data['file'] );
 
@@ -141,8 +152,8 @@ function wp_smushit_update_attachment($data, $ID) {
 		$post = get_post( $ID );
 		$guid = preg_replace('/.gif$/i', '.png', $post->guid);
 
-		wp_update_post( array('ID' => $ID, 
-		                      'post_mime_type' => 'image/png', 
+		wp_update_post( array('ID' => $ID,
+		                      'post_mime_type' => 'image/png',
 		                      'guid' => $guid) );
 	}
 
@@ -178,7 +189,7 @@ function wp_smushit_resize_from_meta_data($meta) {
 
 
 /**
- * Print column header for Smush.it results in the media library using 
+ * Print column header for Smush.it results in the media library using
  * the `manage_media_columns` hook.
  */
 function wp_smushit_columns($defaults) {
@@ -187,7 +198,7 @@ function wp_smushit_columns($defaults) {
 }
 
 /**
- * Print column data for Smush.it results in the media library using 
+ * Print column data for Smush.it results in the media library using
  * the `manage_media_custom_column` hook.
  */
 function wp_smushit_custom_column($column_name, $id) {
@@ -197,7 +208,7 @@ function wp_smushit_custom_column($column_name, $id) {
     		print $data['wp_smushit'];
     	else
     		print __('Not processed', WP_SMUSHIT_DOMAIN);
-    	
+
     	printf("<br><a href=\"admin.php?page=%s/smush.php&amp;attachment_ID=%d&amp;noheader\">%s</a>",
 		         WP_SMUSHIT_PLUGIN_DIR,
 		         $id,

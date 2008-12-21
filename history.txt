@@ -2,6 +2,8 @@
 
 == 1.1 ==
 * improved handling of errors from Smush.it
+* added ability to manually smush images from media library
+* fixed inconsistent path handling from WP 2.5 -> WP 2.7
 
 == 1.0.2 ==
 * added 'Not processed' status message when browsing media library
