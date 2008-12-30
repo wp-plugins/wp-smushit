@@ -4,7 +4,7 @@
  *
  * Expects an `attachment_ID` in the query string.
  *
- * @version 1.1
+ * @version 1.1.1
  * @package WP_SmushIt
  */
 
@@ -23,7 +23,7 @@ wp_update_attachment_metadata( $attachment_ID, $new_meta );
 
 $sendback = wp_get_referer();
 $sendback = preg_replace('|[^a-z0-9-~+_.?#=&;,/:]|i', '', $sendback);
-//$sendback .= '#post-' . $attachment_ID;
+
 wp_redirect($sendback);
 
 exit(0);

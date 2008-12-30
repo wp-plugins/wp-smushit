@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.1
+ * @version 1.1.1
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.1
+Version: 1.1.1
 Author URI: http://dialect.ca/?wp_smush_it
 */
 
@@ -59,7 +59,7 @@ add_action('admin_init', 'wp_smushit_init');
  */
 function wp_smushit($file) {
 	// dont't run on localhost
-	if( $_SERVER['SERVER_ADDR'] == '127.0.0.1' )
+	if( '127.0.0.1' == $_SERVER['SERVER_ADDR'] )
 		return array($file, __('Not processed (local file)', WP_SMUSHIT_DOMAIN));
 
 
@@ -99,7 +99,7 @@ function wp_smushit($file) {
 		$data = $json->decode($data);
 	}
 
-	if ( intval($data->dest_size) == -1 )
+	if ( -1 == intval($data->dest_size) )
 		return array($file, __('No savings', WP_SMUSHIT_DOMAIN));
 
 	if ( !$data->dest ) {
@@ -113,12 +113,12 @@ function wp_smushit($file) {
 	$temp_file = tempnam( WP_CONTENT_DIR, '___' );
 
 	if( !@copy( $processed_url, $temp_file ) )
-		return false;
+		return array($file, __('Error updating file', WP_SMUSHIT_DOMAIN) );
 
 	chmod( $temp_file, 0644 );
 
 	// check if Smush.it converted a GIF to a PNG
-	if( WP_SMUSHIT_GIF_TO_PNG == 1 && wp_smushit_did_gif_to_png($file, $data->dest) ) {
+	if( 1 == WP_SMUSHIT_GIF_TO_PNG && wp_smushit_did_gif_to_png($file, $data->dest) ) {
 		$file = preg_replace('/.gif$/i', '.png', $file);
 		$file_path = preg_replace('/.gif$/i', '.png', $file_path);
 
@@ -222,8 +222,8 @@ function wp_smushit_custom_column($column_name, $id) {
  * @returns bool
  */
 function wp_smushit_did_gif_to_png($orig, $new) {
-	return (stripos(strrev($new), 'gnp.') === 0 &&
-	        stripos(strrev($orig), 'fig.') === 0 );
+	return (0 === stripos(strrev($new), 'gnp.') &&
+	        0 === stripos(strrev($orig), 'fig.') );
 
 }
 

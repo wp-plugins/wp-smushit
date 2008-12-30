@@ -1,5 +1,8 @@
 === WP Smush.it Release History ===
 
+== 1.1.1 ==
+* added error message on PHP copy error
+
 == 1.1 ==
 * improved handling of errors from Smush.it
 * added ability to manually smush images from media library
