@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.1.1
+ * @version 1.1.2
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.1.1
+Version: 1.1.2
 Author URI: http://dialect.ca/?wp_smush_it
 */
 
@@ -59,8 +59,8 @@ add_action('admin_init', 'wp_smushit_init');
  */
 function wp_smushit($file) {
 	// dont't run on localhost
-	if( '127.0.0.1' == $_SERVER['SERVER_ADDR'] )
-		return array($file, __('Not processed (local file)', WP_SMUSHIT_DOMAIN));
+//	if( '127.0.0.1' == $_SERVER['SERVER_ADDR'] )
+//		return array($file, __('Not processed (local file)', WP_SMUSHIT_DOMAIN));
 
 
 	$file_path = $file;
@@ -77,6 +77,12 @@ function wp_smushit($file) {
 	}
 
 	$req = sprintf( SMUSHIT_REQ_URL, urlencode( $file_url ) );
+
+	// test for allow_url_fopen -- this is temporary and will be replaced with the new
+	// WP_Http class in the near future
+	// borrowed from wp-includes/http.php, line 696
+	if ( ! function_exists('fopen') || (function_exists('ini_get') && true != ini_get('allow_url_fopen')) )
+		return array($file, __('Remote fopen is not enabled (<a href="http://dialect.ca/code/wp-smushit/#fopen_note" target="_blank">more info</a>)', WP_SMUSHIT_DOMAIN));
 
 	$fh = @fopen( $req, 'r' ); // post to Smush.it
 

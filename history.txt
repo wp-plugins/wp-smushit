@@ -1,5 +1,8 @@
 === WP Smush.it Release History ===
 
+== 1.1.2 ==
+* added test for allow_url_fopen
+
 == 1.1.1 ==
 * added error message on PHP copy error
 
