@@ -33,6 +33,10 @@ You can also run your existing images through Smush.it via the WordPress `Media 
 = Privacy = 
 Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on their <a href="http://smush.it/faq.php">FAQ</a>).
 
+= Did you find this plugin useful? =
+
+You can write a "recommendation" for me on my [LinkedIn profile](http://www.linkedin.com/in/alexdunae).
+
 == Screenshots ==
 
 1. See the savings from Smush.it in the Media Library.
