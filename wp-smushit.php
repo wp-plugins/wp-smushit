@@ -83,7 +83,7 @@ function wp_smushit($file) {
 	}
 
 	$data = wp_smushit_post($file_url);
-	
+
 	if ( false === $data )
 		return array($file, __('Error posting to Smush.it', WP_SMUSHIT_DOMAIN));
 
@@ -114,7 +114,7 @@ function wp_smushit($file) {
 
 
 	$temp_file = wp_smushit_download($processed_url);
-	
+
 	if ( false === $temp_file )
 		return array($file, __('Error updating file', WP_SMUSHIT_DOMAIN) );
 
@@ -240,45 +240,23 @@ function wp_smushit_init() {
 
 function wp_smushit_add_pages() {
 	add_options_page(__('WP Smush.it Options', WP_SMUSHIT_OPTIONS), 'WP Smush.it', 8, dirname(__FILE__) . '/options.php');
+
+	add_filter( 'plugin_action_links', 'wp_smushit_filter_plugin_actions', 10, 2 );
+}
+
+function wp_smushit_filter_plugin_actions($links, $file) {
+	if ( 'wp-smushit/wp-smushit.php' === $file ) {
+		$settings_link = '<a href="options-general.php?page=wp-smushit/options.php">' . __('Settings') . '</a>';
+		array_unshift( $links, $settings_link ); // before other links
+	}
+	return $links;
+
+
 }
 
 function wp_smushit_options() {
 	include_once 'options.php';
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /**
@@ -300,7 +278,7 @@ function wp_smushit_download($remote_file) {
 			return false;
 
 		$data =  wp_remote_retrieve_body($response);
-		
+
 		if ( false === file_put_contents($temp_file, $data) )
 			return false;
 
@@ -311,21 +289,9 @@ function wp_smushit_download($remote_file) {
 	}
 
 	chmod( $temp_file, 0644 );
-	
+
 	return $temp_file;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
