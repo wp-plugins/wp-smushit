@@ -1,13 +1,13 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.1.3
+Version: 1.2
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae
 Tags: images, image, attachments, attachment
 Requires at least: 2.5
-Tested up to: 2.7
-Stable tag: 1.1.3
+Tested up to: 2.7.1
+Stable tag: 1.2
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 
@@ -33,6 +33,10 @@ You can also run your existing images through Smush.it via the WordPress `Media 
 = Privacy = 
 Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on their <a href="http://smush.it/faq.php">FAQ</a>).
 
+= Did you find this plugin useful? =
+
+You can write a "recommendation" for me on my [LinkedIn profile](http://www.linkedin.com/in/alexdunae).
+
 == Screenshots ==
 
 1. See the savings from Smush.it in the Media Library.
@@ -45,7 +49,7 @@ Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on 
 
 == Contact and Credits ==
 
-Written by Alex Dunae at Dialect ([dialect.ca](http://dialect.ca/?wp_smush_it), e-mail 'alex' at 'dialect dot ca'), 2008.
+Written by Alex Dunae at Dialect ([dialect.ca](http://dialect.ca/?wp_smush_it), e-mail 'alex' at 'dialect dot ca'), 2008-09.
 
 WP Smush.it includes a copy of the [PEAR JSON library](http://pear.php.net/pepr/pepr-proposal-show.php?id=198) written by Michal Migurski.
 

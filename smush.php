@@ -4,7 +4,7 @@
  *
  * Expects an `attachment_ID` in the query string.
  *
- * @version 1.1.3
+ * @version 1.2
  * @package WP_SmushIt
  */
 
