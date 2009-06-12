@@ -5,7 +5,7 @@ Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae
 Tags: images, image, attachments, attachment
-Requires at least: 2.5
+Requires at least: 2.8
 Tested up to: 2.7.1
 Stable tag: 1.2
 
