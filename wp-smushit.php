@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.2
+ * @version 1.2.1
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.2
+Version: 1.2.1
 Author URI: http://dialect.ca/?wp_smush_it
 */
 
@@ -28,7 +28,7 @@ define('SMUSHIT_BASE_URL', 'http://smush.it/');
 
 define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
 
-define('WP_SMUSHIT_UA', 'WP Smush.it/1.2 (+http://dialect.ca/code/wp-smushit)');
+define('WP_SMUSHIT_UA', 'WP Smush.it/1.2.1 (+http://dialect.ca/code/wp-smushit)');
 
 define('WP_SMUSHIT_GIF_TO_PNG', intval(get_option('wp_smushit_gif_to_png')));
 
@@ -52,6 +52,26 @@ add_filter('manage_media_columns', 'wp_smushit_columns');
 add_action('manage_media_custom_column', 'wp_smushit_custom_column', 10, 2);
 add_action('admin_menu', 'wp_smushit_add_pages');
 add_action('admin_init', 'wp_smushit_init');
+
+/**
+ * Manually process an image from the Media Library
+ */
+
+if ( isset($_GET['attachment_ID']) ) {
+	$attachment_ID = intval($_GET['attachment_ID']);
+
+	$original_meta = wp_get_attachment_metadata( $attachment_ID );
+
+	$new_meta = wp_smushit_resize_from_meta_data( $original_meta );
+
+	wp_update_attachment_metadata( $attachment_ID, $new_meta );
+
+	$sendback = wp_get_referer();
+	$sendback = preg_replace('|[^a-z0-9-~+_.?#=&;,/:]|i', '', $sendback);
+
+	header("Location: $sendback");
+	exit(0);
+}
 
 
 
@@ -90,8 +110,10 @@ function wp_smushit($file) {
 
 	// make sure the response looks like JSON -- added 2008-12-19 when
 	// Smush.it was returning PHP warnings before the JSON output
-	if ( strpos( trim($data), '{' ) != 0 )
+	if ( strpos( trim($data), '{' ) != 0 ) {
+	var_dump($data);
 		return array($file, __('Bad response from Smush.it', WP_SMUSHIT_DOMAIN));
+		}
 
 
 	// read the JSON response
@@ -196,8 +218,22 @@ function wp_smushit_resize_from_meta_data($meta) {
  * the `manage_media_columns` hook.
  */
 function wp_smushit_columns($defaults) {
+	$defaults['filesize'] = 'File size';
 	$defaults['smushit'] = 'Smush.it';
 	return $defaults;
+}
+
+/**
+ * Return the filesize in a humanly readable format.
+ * Taken from http://www.php.net/manual/en/function.filesize.php#91477
+ */
+function formatBytes($bytes, $precision = 2) { 
+    $units = array('B', 'KB', 'MB', 'GB', 'TB'); 
+    $bytes = max($bytes, 0); 
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
+    $pow = min($pow, count($units) - 1); 
+    $bytes /= pow(1024, $pow);    
+    return round($bytes, $precision) . ' ' . $units[$pow]; 
 }
 
 /**
@@ -212,11 +248,17 @@ function wp_smushit_custom_column($column_name, $id) {
     	else
     		print __('Not processed', WP_SMUSHIT_DOMAIN);
 
-    	printf("<br><a href=\"admin.php?page=%s/smush.php&amp;attachment_ID=%d&amp;noheader\">%s</a>",
+    	printf("<br><a href=\"admin.php?page=%s/wp-smushit.php&amp;attachment_ID=%d&amp;noheader\">%s</a>",
 		         WP_SMUSHIT_PLUGIN_DIR,
 		         $id,
 		         __('Smush.it now!', WP_SMUSHIT_DOMAIN));
     }
+    if( $column_name == 'filesize' ) {
+    	$data = wp_get_attachment_metadata($id);
+		$uploads = wp_upload_dir();
+		$file_path = trailingslashit( $uploads['basedir'] ) . $data['file'];
+		print formatBytes(filesize($file_path),2);
+	}
 }
 
 /**
@@ -239,8 +281,15 @@ function wp_smushit_init() {
 }
 
 function wp_smushit_add_pages() {
+	global $_registered_pages;
+	
 	add_options_page(__('WP Smush.it Options', WP_SMUSHIT_OPTIONS), 'WP Smush.it', 8, dirname(__FILE__) . '/options.php');
 
+	// Addsmush.php to the $_registered_pages array to avoid permission errors
+//	$plugin_file = plugin_basename( dirname(__FILE__) );
+//	$hookname = get_plugin_page_hookname( $plugin_file . '/smush.php', '' );
+//	$_registered_pages[$hookname] = true;
+	
 	add_filter( 'plugin_action_links', 'wp_smushit_filter_plugin_actions', 10, 2 );
 }
 
@@ -279,12 +328,27 @@ function wp_smushit_download($remote_file) {
 
 		$data =  wp_remote_retrieve_body($response);
 
-		if ( false === file_put_contents($temp_file, $data) )
-			return false;
+		if ( function_exists('file_put_contents') ) {
+			if ( false === file_put_contents($temp_file, $data) )
+				return false;
+
+		} else { // PHP < 5
+			$fh = @fopen($temp_file, 'w');
+
+			if ( FALSE === $fh )
+				return false;
+
+			if ( FALSE === fwrite($fh, $data) )
+				return false;
+
+			fclose($fh);
+		}
 
 	} else {
+		wp_smushit_check_url_fopen();
+
 		// try using 'fopen' via 'copy'
-		if( !@copy( $remote_file, $temp_file ) )
+		if( FALSE === @copy( $remote_file, $temp_file ) )
 			return false;
 	}
 
@@ -292,9 +356,6 @@ function wp_smushit_download($remote_file) {
 
 	return $temp_file;
 }
-
-
-
 
 
 /**
@@ -308,7 +369,7 @@ function wp_smushit_post($file_url) {
 
 	$data = false;
 
-	if ( function_exists('wp_remote_get') ) {
+	if ( FALSE && function_exists('wp_remote_get') ) {
 		$response = wp_remote_get($req, array('user-agent' => WP_SMUSHIT_UA));
 
 		if ( 200 != wp_remote_retrieve_response_code($response) )
@@ -316,20 +377,35 @@ function wp_smushit_post($file_url) {
 
 		$data =  wp_remote_retrieve_body($response);
 	} else {
-		if ( ! function_exists('fopen') || (function_exists('ini_get') && true != ini_get('allow_url_fopen')) ) {
-			$err = __('Remote fopen is not enabled (<a href="http://dialect.ca/code/wp-smushit/#fopen_note" target="_blank">more info</a>)', WP_SMUSHIT_DOMAIN);
-			wp_die($err);
-			return false;
-		}
+		wp_smushit_check_url_fopen();
 
 		$fh = @fopen( $req, 'r' ); // post to Smush.it
 
 		if ( !$fh )
 			return false;
+	
+		if( FALSE && function_exists('stream_get_contents') ) {
+			$data = stream_get_contents($fh);
+		} else {
+			while( FALSE === feof($fh) ) {
+				$data .= fread($fh, 8192);
+			}
+		}
 
-		$data = stream_get_contents( $fh );
 		fclose( $fh );
 	}
 
 	return $data;
+}
+
+
+function wp_smushit_check_url_fopen() {
+	if ( FALSE === function_exists('fopen') || 
+	     FALSE === ini_get('allow_url_fopen') ) {
+		$err = __('Remote fopen is not enabled (<a href="http://dialect.ca/code/wp-smushit/#fopen_note" target="_blank">more info</a>)', WP_SMUSHIT_DOMAIN);
+		wp_die($err);
+		return false;
+	}
+	
+	return true;
 }

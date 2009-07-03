@@ -1,12 +1,12 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.2
+Version: 1.2.1
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae
 Tags: images, image, attachments, attachment
 Requires at least: 2.5
-Tested up to: 2.8
+Tested up to: 2.8.1
 Stable tag: 1.2
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
@@ -46,6 +46,39 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 1. Upload the `wp-smushit` plugin to your `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. Done!
+
+== Changelog ==
+
+= 1.2.1 =
+* added support for PHP 4
+* workaround for WordPress 2.9 $_registered_pages (see http://core.trac.wordpress.org/changeset/11596)
+
+= 1.2 =
+* added support for WP_Http
+
+= 1.1.3 =
+* fixed activation error when the PEAR JSON library is already loaded
+
+= 1.1.2 =
+* added test for allow_url_fopen
+
+= 1.1.1 =
+* added error message on PHP copy error
+
+= 1.1 =
+* improved handling of errors from Smush.it
+* added ability to manually smush images from media library
+* fixed inconsistent path handling from WP 2.5 -> WP 2.7
+
+= 1.0.2 =
+* added 'Not processed' status message when browsing media library
+
+= 1.0.1 =
+* added i10n functions
+
+= 1.0 =
+* first edition
+
 
 == Contact and Credits ==
 
