@@ -107,14 +107,11 @@ function wp_smushit($file) {
 	if ( false === $data )
 		return array($file, __('Error posting to Smush.it', WP_SMUSHIT_DOMAIN));
 
-
 	// make sure the response looks like JSON -- added 2008-12-19 when
 	// Smush.it was returning PHP warnings before the JSON output
 	if ( strpos( trim($data), '{' ) != 0 ) {
-	var_dump($data);
 		return array($file, __('Bad response from Smush.it', WP_SMUSHIT_DOMAIN));
-		}
-
+	}
 
 	// read the JSON response
 	if ( function_exists('json_decode') ) {
