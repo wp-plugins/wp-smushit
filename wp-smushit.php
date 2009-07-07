@@ -186,10 +186,11 @@ function wp_smushit($file) {
 
 	$savings = intval($data->src_size) - intval($data->dest_size);
 	$savings_str = wp_smushit_format_bytes($savings, 1);
+	$savings_str = str_replace(' ', '&nbsp;', $savings_str);
 
-	$results_msg = sprintf(__("Saved %s (%01.1f%%)", WP_SMUSHIT_DOMAIN), 
-	                 $savings_str,
-	                 $data->percent);
+	$results_msg = sprintf(__("Reduced by %01.1f%% (%s)", WP_SMUSHIT_DOMAIN), 
+	                 $data->percent,
+	                 $savings_str);
 
 	return array($file, $results_msg);
 }
