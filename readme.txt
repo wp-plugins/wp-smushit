@@ -51,7 +51,8 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 
 = 1.2.1 =
 * added support for PHP 4
-* workaround for WordPress 2.9 $_registered_pages (see http://core.trac.wordpress.org/changeset/11596)
+* created admin_action_ hook as workaround to WordPress 2.9's $_registered_pages security (see http://core.trac.wordpress.org/changeset/11596)
+* add savings amount in bytes to Media Library (thx Yoast)
 
 = 1.2 =
 * added support for WP_Http
