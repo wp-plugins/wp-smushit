@@ -52,12 +52,23 @@ add_filter('manage_media_columns', 'wp_smushit_columns');
 add_action('manage_media_custom_column', 'wp_smushit_custom_column', 10, 2);
 add_action('admin_menu', 'wp_smushit_add_pages');
 add_action('admin_init', 'wp_smushit_init');
+add_action('admin_action_wp_smushit_manual', 'wp_smushit_manual');
+
+
+
 
 /**
  * Manually process an image from the Media Library
  */
+function wp_smushit_manual() {
+	if ( FALSE === current_user_can('upload_files') ) {
+		wp_die(__('You don\'t have permission to work with uploaded files.', WP_SMUSHIT_DOMAIN));
+	}
 
-if ( isset($_GET['attachment_ID']) ) {
+	if ( FALSE === isset($_GET['attachment_ID'])) {
+		wp_die(__('No attachment ID was provided.', WP_SMUSHIT_DOMAIN));
+	}
+
 	$attachment_ID = intval($_GET['attachment_ID']);
 
 	$original_meta = wp_get_attachment_metadata( $attachment_ID );
@@ -69,7 +80,8 @@ if ( isset($_GET['attachment_ID']) ) {
 	$sendback = wp_get_referer();
 	$sendback = preg_replace('|[^a-z0-9-~+_.?#=&;,/:]|i', '', $sendback);
 
-	header("Location: $sendback");
+	//header("Location: $sendback");
+	wp_redirect($sendback);
 	exit(0);
 }
 
@@ -224,13 +236,13 @@ function wp_smushit_columns($defaults) {
  * Return the filesize in a humanly readable format.
  * Taken from http://www.php.net/manual/en/function.filesize.php#91477
  */
-function formatBytes($bytes, $precision = 2) { 
-    $units = array('B', 'KB', 'MB', 'GB', 'TB'); 
-    $bytes = max($bytes, 0); 
-    $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
-    $pow = min($pow, count($units) - 1); 
-    $bytes /= pow(1024, $pow);    
-    return round($bytes, $precision) . ' ' . $units[$pow]; 
+function formatBytes($bytes, $precision = 2) {
+    $units = array('B', 'KB', 'MB', 'GB', 'TB');
+    $bytes = max($bytes, 0);
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+    $pow = min($pow, count($units) - 1);
+    $bytes /= pow(1024, $pow);
+    return round($bytes, $precision) . ' ' . $units[$pow];
 }
 
 /**
@@ -245,8 +257,7 @@ function wp_smushit_custom_column($column_name, $id) {
     	else
     		print __('Not processed', WP_SMUSHIT_DOMAIN);
 
-    	printf("<br><a href=\"admin.php?page=%s/wp-smushit.php&amp;attachment_ID=%d&amp;noheader\">%s</a>",
-		         WP_SMUSHIT_PLUGIN_DIR,
+    	printf("<br><a href=\"admin.php?action=wp_smushit_manual&amp;attachment_ID=%d\">%s</a>",
 		         $id,
 		         __('Smush.it now!', WP_SMUSHIT_DOMAIN));
     }
@@ -279,14 +290,9 @@ function wp_smushit_init() {
 
 function wp_smushit_add_pages() {
 	global $_registered_pages;
-	
+
 	add_options_page(__('WP Smush.it Options', WP_SMUSHIT_OPTIONS), 'WP Smush.it', 8, dirname(__FILE__) . '/options.php');
 
-	// Addsmush.php to the $_registered_pages array to avoid permission errors
-//	$plugin_file = plugin_basename( dirname(__FILE__) );
-//	$hookname = get_plugin_page_hookname( $plugin_file . '/smush.php', '' );
-//	$_registered_pages[$hookname] = true;
-	
 	add_filter( 'plugin_action_links', 'wp_smushit_filter_plugin_actions', 10, 2 );
 }
 
@@ -380,7 +386,7 @@ function wp_smushit_post($file_url) {
 
 		if ( !$fh )
 			return false;
-	
+
 		if( FALSE && function_exists('stream_get_contents') ) {
 			$data = stream_get_contents($fh);
 		} else {
@@ -397,12 +403,12 @@ function wp_smushit_post($file_url) {
 
 
 function wp_smushit_check_url_fopen() {
-	if ( FALSE === function_exists('fopen') || 
+	if ( FALSE === function_exists('fopen') ||
 	     FALSE === ini_get('allow_url_fopen') ) {
 		$err = __('Remote fopen is not enabled (<a href="http://dialect.ca/code/wp-smushit/#fopen_note" target="_blank">more info</a>)', WP_SMUSHIT_DOMAIN);
 		wp_die($err);
 		return false;
 	}
-	
+
 	return true;
 }
