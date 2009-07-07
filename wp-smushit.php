@@ -54,7 +54,36 @@ add_action('admin_menu', 'wp_smushit_add_pages');
 add_action('admin_init', 'wp_smushit_init');
 add_action('admin_action_wp_smushit_manual', 'wp_smushit_manual');
 
+/**
+ * Plugin admin functions 
+ */
 
+function wp_smushit_install() {
+	add_option('wp_smushit_gif_to_png', 0);
+}
+
+function wp_smushit_init() {
+	load_plugin_textdomain(WP_SMUSHIT_DOMAIN);
+}
+
+function wp_smushit_add_pages() {
+	global $_registered_pages;
+
+	add_options_page(__('WP Smush.it Options', WP_SMUSHIT_OPTIONS), 'WP Smush.it', 8, dirname(__FILE__) . '/options.php');
+	add_filter( 'plugin_action_links', 'wp_smushit_filter_plugin_actions', 10, 2 );
+}
+
+function wp_smushit_filter_plugin_actions($links, $file) {
+	if ( 'wp-smushit/wp-smushit.php' === $file ) {
+		$settings_link = '<a href="options-general.php?page=wp-smushit/options.php">' . __('Settings') . '</a>';
+		array_unshift( $links, $settings_link ); // before other links
+	}
+	return $links;
+}
+
+function wp_smushit_options() {
+	include_once 'options.php';
+}
 
 
 /**
@@ -79,13 +108,9 @@ function wp_smushit_manual() {
 
 	$sendback = wp_get_referer();
 	$sendback = preg_replace('|[^a-z0-9-~+_.?#=&;,/:]|i', '', $sendback);
-
-	//header("Location: $sendback");
 	wp_redirect($sendback);
 	exit(0);
 }
-
-
 
 /**
  * Process an image with Smush.it.
@@ -143,7 +168,6 @@ function wp_smushit($file) {
 
 	$processed_url = SMUSHIT_BASE_URL . $data->dest;
 
-
 	$temp_file = wp_smushit_download($processed_url);
 
 	if ( false === $temp_file )
@@ -160,13 +184,15 @@ function wp_smushit($file) {
 
 	@rename( $temp_file, $file_path );
 
-	$results_msg = sprintf(__("Reduced by %01.1f%%", WP_SMUSHIT_DOMAIN), $data->percent);
+	$savings = intval($data->src_size) - intval($data->dest_size);
+	$savings_str = wp_smushit_format_bytes($savings, 1);
+
+	$results_msg = sprintf(__("Saved %s (%01.1f%%)", WP_SMUSHIT_DOMAIN), 
+	                 $savings_str,
+	                 $data->percent);
 
 	return array($file, $results_msg);
 }
-
-
-
 
 /**
  * Update the attachment's meta data after being smushed.
@@ -221,54 +247,6 @@ function wp_smushit_resize_from_meta_data($meta) {
 	return $meta;
 }
 
-
-/**
- * Print column header for Smush.it results in the media library using
- * the `manage_media_columns` hook.
- */
-function wp_smushit_columns($defaults) {
-	$defaults['filesize'] = 'File size';
-	$defaults['smushit'] = 'Smush.it';
-	return $defaults;
-}
-
-/**
- * Return the filesize in a humanly readable format.
- * Taken from http://www.php.net/manual/en/function.filesize.php#91477
- */
-function formatBytes($bytes, $precision = 2) {
-    $units = array('B', 'KB', 'MB', 'GB', 'TB');
-    $bytes = max($bytes, 0);
-    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-    $pow = min($pow, count($units) - 1);
-    $bytes /= pow(1024, $pow);
-    return round($bytes, $precision) . ' ' . $units[$pow];
-}
-
-/**
- * Print column data for Smush.it results in the media library using
- * the `manage_media_custom_column` hook.
- */
-function wp_smushit_custom_column($column_name, $id) {
-    if( $column_name == 'smushit' ) {
-    	$data = wp_get_attachment_metadata($id);
-    	if ( isset($data['wp_smushit']) && !empty($data['wp_smushit']) )
-    		print $data['wp_smushit'];
-    	else
-    		print __('Not processed', WP_SMUSHIT_DOMAIN);
-
-    	printf("<br><a href=\"admin.php?action=wp_smushit_manual&amp;attachment_ID=%d\">%s</a>",
-		         $id,
-		         __('Smush.it now!', WP_SMUSHIT_DOMAIN));
-    }
-    if( $column_name == 'filesize' ) {
-    	$data = wp_get_attachment_metadata($id);
-		$uploads = wp_upload_dir();
-		$file_path = trailingslashit( $uploads['basedir'] ) . $data['file'];
-		print formatBytes(filesize($file_path),2);
-	}
-}
-
 /**
  * Compare file names to see if the extension changed from `.gif` to `.png`.
  *
@@ -279,37 +257,6 @@ function wp_smushit_did_gif_to_png($orig, $new) {
 	        0 === stripos(strrev($orig), 'fig.') );
 
 }
-
-function wp_smushit_install() {
-	add_option('wp_smushit_gif_to_png', 0);
-}
-
-function wp_smushit_init() {
-	load_plugin_textdomain(WP_SMUSHIT_DOMAIN);
-}
-
-function wp_smushit_add_pages() {
-	global $_registered_pages;
-
-	add_options_page(__('WP Smush.it Options', WP_SMUSHIT_OPTIONS), 'WP Smush.it', 8, dirname(__FILE__) . '/options.php');
-
-	add_filter( 'plugin_action_links', 'wp_smushit_filter_plugin_actions', 10, 2 );
-}
-
-function wp_smushit_filter_plugin_actions($links, $file) {
-	if ( 'wp-smushit/wp-smushit.php' === $file ) {
-		$settings_link = '<a href="options-general.php?page=wp-smushit/options.php">' . __('Settings') . '</a>';
-		array_unshift( $links, $settings_link ); // before other links
-	}
-	return $links;
-
-
-}
-
-function wp_smushit_options() {
-	include_once 'options.php';
-}
-
 
 /**
  * Download a remote file to a temp file.
@@ -401,7 +348,10 @@ function wp_smushit_post($file_url) {
 	return $data;
 }
 
-
+/**
+ * Check if `allow_url_fopen` is `true`.
+ * Calls `wp_die()` if not, otherwise returns true.
+ */
 function wp_smushit_check_url_fopen() {
 	if ( FALSE === function_exists('fopen') ||
 	     FALSE === ini_get('allow_url_fopen') ) {
@@ -411,4 +361,47 @@ function wp_smushit_check_url_fopen() {
 	}
 
 	return true;
+}
+
+/**
+ * Print column header for Smush.it results in the media library using
+ * the `manage_media_columns` hook.
+ */
+function wp_smushit_columns($defaults) {
+	$defaults['smushit'] = 'Smush.it';
+	return $defaults;
+}
+
+/**
+ * Return the filesize in a humanly readable format.
+ * Taken from http://www.php.net/manual/en/function.filesize.php#91477
+ */
+function wp_smushit_format_bytes($bytes, $precision = 2) {
+    $units = array('B', 'KB', 'MB', 'GB', 'TB');
+    $bytes = max($bytes, 0);
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+    $pow = min($pow, count($units) - 1);
+    $bytes /= pow(1024, $pow);
+    return round($bytes, $precision) . ' ' . $units[$pow];
+}
+
+/**
+ * Print column data for Smush.it results in the media library using
+ * the `manage_media_custom_column` hook.
+ */
+function wp_smushit_custom_column($column_name, $id) {
+    if( $column_name == 'smushit' ) {
+    	$data = wp_get_attachment_metadata($id);
+    	if ( isset($data['wp_smushit']) && !empty($data['wp_smushit']) ) {
+    		print $data['wp_smushit'];
+    		printf("<br><a href=\"admin.php?action=wp_smushit_manual&amp;attachment_ID=%d\">%s</a>",
+			         $id,
+			         __('Re-smush', WP_SMUSHIT_DOMAIN));
+    	} else {
+    		print __('Not processed', WP_SMUSHIT_DOMAIN);
+    		printf("<br><a href=\"admin.php?action=wp_smushit_manual&amp;attachment_ID=%d\">%s</a>",
+			         $id,
+			         __('Smush.it now!', WP_SMUSHIT_DOMAIN));
+    	}
+    }
 }
