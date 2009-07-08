@@ -7,7 +7,7 @@ Contributors: alexdunae
 Tags: images, image, attachments, attachment
 Requires at least: 2.5
 Tested up to: 2.8.1
-Stable tag: 1.2
+Stable tag: 1.2.1
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 
