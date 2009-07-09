@@ -53,6 +53,8 @@ add_action('manage_media_custom_column', 'wp_smushit_custom_column', 10, 2);
 add_action('admin_menu', 'wp_smushit_add_pages');
 add_action('admin_init', 'wp_smushit_init');
 add_action('admin_action_wp_smushit_manual', 'wp_smushit_manual');
+add_action('admin_action_wp_smushit_theme', 'wp_smushit_theme');
+
 
 /**
  * Plugin admin functions 
@@ -67,8 +69,7 @@ function wp_smushit_init() {
 }
 
 function wp_smushit_add_pages() {
-	global $_registered_pages;
-
+	add_submenu_page('themes.php', 'Smush.it', 'WP Smush.it', 8, dirname(__FILE__) . '/theme.php');
 	add_options_page(__('WP Smush.it Options', WP_SMUSHIT_OPTIONS), 'WP Smush.it', 8, dirname(__FILE__) . '/options.php');
 	add_filter( 'plugin_action_links', 'wp_smushit_filter_plugin_actions', 10, 2 );
 }
@@ -83,6 +84,14 @@ function wp_smushit_filter_plugin_actions($links, $file) {
 
 function wp_smushit_options() {
 	include_once 'options.php';
+}
+
+/**
+ * Process all the images from a given theme
+ */
+function wp_smushit_theme() {
+	require_once('smush_theme.php');
+	exit(0);
 }
 
 
