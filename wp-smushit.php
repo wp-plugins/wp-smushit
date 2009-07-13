@@ -22,9 +22,9 @@ if ( !class_exists('Services_JSON') ) {
  * Constants
  */
 
-define('SMUSHIT_REQ_URL', 'http://smush.it/ws.php?img=%s');
+define('SMUSHIT_REQ_URL', 'http://smushit.com/ws.php?img=%s');
 
-define('SMUSHIT_BASE_URL', 'http://smush.it/');
+define('SMUSHIT_BASE_URL', 'http://smushit.com/');
 
 define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
 
@@ -66,6 +66,8 @@ function wp_smushit_install() {
 
 function wp_smushit_init() {
 	load_plugin_textdomain(WP_SMUSHIT_DOMAIN);
+//	print 'init';
+	wp_enqueue_script('common');            
 }
 
 function wp_smushit_add_pages() {
@@ -127,29 +129,32 @@ function wp_smushit_manual() {
  * Returns an array of the $file $results.
  *
  * @param   string $file            Full path to the image file
+ * @param   bool   $is_theme_file   Trigger different file handling for theme assets
  * @returns array
  */
-function wp_smushit($file) {
+function wp_smushit($file, $file_url = '') {
 	// dont't run on localhost
 	if( '127.0.0.1' == $_SERVER['SERVER_ADDR'] )
 		return array($file, __('Not processed (local file)', WP_SMUSHIT_DOMAIN));
 
 
 	$file_path = $file;
-	$file_url = '';
 
-	if ( 0 === strpos($file, WP_CONTENT_DIR) ) {
-		// WordPress < 2.6.2: $file is already an absolute path
-		$file_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $file );
-	} else {
-		// WordPress >= 2.6.2: determine the absolute $file_path and $file_url
-		$uploads = wp_upload_dir();
-		$file_path = trailingslashit( $uploads['basedir'] ) . $file;
-		$file_url  = trailingslashit( $uploads['baseurl'] ) . $file;
+
+	if ( !$file_url || empty($file_url) ) {
+		if ( 0 === strpos($file, WP_CONTENT_DIR) ) {
+			// WordPress < 2.6.2: $file is already an absolute path
+			$file_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $file );
+		} else {
+			// WordPress >= 2.6.2: determine the absolute $file_path and $file_url
+			$uploads = wp_upload_dir();
+			$file_path = trailingslashit( $uploads['basedir'] ) . $file;
+			$file_url  = trailingslashit( $uploads['baseurl'] ) . $file;
+		}
 	}
 
 	$data = wp_smushit_post($file_url);
-
+//print $file_url;
 	if ( false === $data )
 		return array($file, __('Error posting to Smush.it', WP_SMUSHIT_DOMAIN));
 
@@ -171,7 +176,7 @@ function wp_smushit($file) {
 		return array($file, __('No savings', WP_SMUSHIT_DOMAIN));
 
 	if ( !$data->dest ) {
-		$err = ($data->error ? $data->error : 'Unknown error');
+		$err = ($data->error ? 'Smush.it error: ' . $data->error : 'unknown error');
 		return array($file, __($err, WP_SMUSHIT_DOMAIN) );
 	}
 
