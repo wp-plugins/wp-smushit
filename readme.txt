@@ -49,19 +49,23 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 
 == Changelog ==
 
+= 1.3 =
+* added smushing of theme assets
+* added security checks to files passed to `wp_smushit()`
+
 = 1.2.1 =
 * added support for PHP 4
-* created admin_action_ hook as workaround to WordPress 2.9's $_registered_pages security (see http://core.trac.wordpress.org/changeset/11596)
-* add savings amount in bytes to Media Library (thx Yoast)
+* created admin action hook as workaround to WordPress 2.9's `$_registered_pages` security (see [changeset 11596](http://core.trac.wordpress.org/changeset/11596))
+* add savings amount in bytes to Media Library (thx [Yoast](http://www.yoast.com/))
 
 = 1.2 =
-* added support for WP_Http
+* added support for `WP_Http`
 
 = 1.1.3 =
 * fixed activation error when the PEAR JSON library is already loaded
 
 = 1.1.2 =
-* added test for allow_url_fopen
+* added test for `allow_url_fopen`
 
 = 1.1.1 =
 * added error message on PHP copy error

@@ -8,10 +8,12 @@
  * @package WP_SmushIt
  */
 
-// TODO: move writable and is_file checks to smushit();
+	if ( FALSE === current_user_can('edit_themes') ) {
+		wp_die(__('You don\'t have permission to work with themes.', WP_SMUSHIT_DOMAIN));
+	}
 
-ob_start();
- wp_enqueue_script( 'common'); 
+	ob_start();
+	wp_enqueue_script( 'common');
 	$theme = null;
 	$theme_path = null;
 	$theme_url = null;
@@ -27,7 +29,7 @@ ob_start();
 <div class="wrap">
 <div id="icon-plugins" class="icon32"><br /></div><h2>WP Smush.it: Smush Theme Assets</h2>
 
-<?php 
+<?php
 	// Smush files
 	if (isset($_POST['action']) && $_POST['action'] == 'smush_theme' ):
 
@@ -44,35 +46,17 @@ ob_start();
 			// decode and sanitize the file path
 			$asset_url = base64_decode($l);
 			$asset_path = str_replace($theme_url, $theme_path, $asset_url);
-			$asset_path = realpath($asset_path);
 
-			// check the file is within the current theme directory
-			if ( 0 != stripos($asset_path, $theme_path) ) {
-				print "<p><span class='code'>$asset_path</span> is outside of the theme directory.</p>\n";
-				continue;
-			}
 
-			// check that the file exists
-			if ( FALSE === file_exists($asset_path) || FALSE === is_file($asset_path) ) {
-				print "<p>Could not find <span class='code'>$asset_path</span>.</p>\n";
-				continue;
-			}
-
-			// check that the file is writable			
-			if ( FALSE === is_writable($asset_path) ) {
-				print "<p><span class='code'>$asset_path</span> is not writable.</p>\n";
-				continue;			
-			}
-		
 			print "<p>Smushing <span class='code'>$asset_url</span><br/>";
-		
-			list($processed_path, $msg) = wp_smushit($asset_path, $asset_url);
+
+			list($processed_path, $msg) = wp_smushit($asset_path);
 
 			echo "<em>&#x2013; $msg</em>.</p>\n";
 			ob_flush();
 		}
 
- 			
+
 ?>
 
 <p>Finished processing all the files in the <strong><?php echo $theme; ?></strong> theme.</p>
@@ -82,7 +66,7 @@ ob_start();
 <!-- <p><strong>Actions:</strong> <a href="plugins.php?action=activate&amp;plugin=google-sitemap-generator%2Fsitemap.php&amp;_wpnonce=2b4ca1722c" title="Activate this plugin" target="_parent">Activate Plugin</a> | <a href="http://localhost/wp28/wp-admin/plugin-install.php" title="Return to Plugin Installer" target="_parent">Return to Plugin Installer</a></p> -->
 
 
-<?php 
+<?php
 	// Select files to smush
 	elseif( $theme ):
 		$td = get_theme_data($theme_path  . '/style.css');
@@ -95,7 +79,7 @@ ob_start();
 
 <form method="post" action="">
 <input type="hidden" name="action" value="smush_theme"/>
-<?php 
+<?php
 	if ( function_exists('wp_nonce_field') ) wp_nonce_field('wp-smushit_smush-theme' . $theme);
 ?>
 
@@ -113,10 +97,10 @@ ob_start();
 		if ( preg_match('/\.(jpg|jpeg|png|gif)$/i', $file) < 1 ) {
 			continue;
 		}
-		
+
 		$file_url = $theme_url . '/' . $file;
-		
-		
+
+
 ?>
 	<tr id="asdasdasd" valign="middle">
 		<th scope="row" class="check-column"><input type="checkbox" name="smushitlink[]" value="<?php echo attribute_escape(base64_encode($file_url)); ?>" /></th>
@@ -140,26 +124,26 @@ ob_start();
 
 <p>Select a theme.</p>
 <ul>
-<?php 
+<?php
 	$themes = get_themes();
-	
+
 	foreach($themes as $t) {
-	
+
 		printf("\t<li><a href=\"?page=%s&amp;theme=%s\">%s</a></li>\n",
 				basename(dirname(__FILE__)) . '/theme.php',
 				$t['Template'],
 				$t['Name']);
-				
-	
+
+
 	}
-	
+
 	//var_dump($themes);
 ?>
 </ul>
 <?php endif; ?>
 </div>
 
-<?php 
+<?php
 
 exit;
 
