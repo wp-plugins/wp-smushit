@@ -6,8 +6,8 @@ Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae
 Tags: images, image, attachments, attachment
 Requires at least: 2.5
-Tested up to: 2.8.1
-Stable tag: 1.2.1
+Tested up to: 2.8.2
+Stable tag: 1.2.2
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 
@@ -49,8 +49,8 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 
 == Changelog ==
 
-= 1.3 =
-* added smushing of theme assets
+= 1.2.2 =
+* updated to use Yahoo! hosted Smush.it service
 * added security checks to files passed to `wp_smushit()`
 
 = 1.2.1 =
