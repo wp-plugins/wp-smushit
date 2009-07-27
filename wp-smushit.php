@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.2.2
+ * @version 1.2.3
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.2.2
+Version: 1.2.3
 Author URI: http://dialect.ca/?wp_smush_it
 */
 
@@ -53,7 +53,7 @@ add_action('manage_media_custom_column', 'wp_smushit_custom_column', 10, 2);
 add_action('admin_menu', 'wp_smushit_add_pages');
 add_action('admin_init', 'wp_smushit_init');
 add_action('admin_action_wp_smushit_manual', 'wp_smushit_manual');
-add_action('admin_action_wp_smushit_theme', 'wp_smushit_theme');
+//add_action('admin_action_wp_smushit_theme', 'wp_smushit_theme');
 
 
 /**
@@ -92,7 +92,7 @@ function wp_smushit_options() {
  * Process all the images from a given theme
  */
 function wp_smushit_theme() {
-	require_once('smush_theme.php');
+	//require_once('theme.php');
 	exit(0);
 }
 

@@ -21,12 +21,12 @@
 <p class="submit"><input type="submit" name="Submit" value="<?php _e('Save Changes') ?>" /></p>
 
 <?php
-echo get_template_directory()  .'/style.css';
-$theme_data = get_theme_data( get_template_directory() .'/style.css');
-var_dump($theme_data);
+//echo get_template_directory()  .'/style.css';
+//$theme_data = get_theme_data( get_template_directory() .'/style.css');
+//var_dump($theme_data);
 ?>
 
-<p><a href="admin.php?action=wp_smushit_theme&amp;theme=<?php echo urlencode(get_template_directory()); ?>">Smush current theme</a> (<code><?php echo get_current_theme(); ?></code>)</p>
+<!--<p><a href="admin.php?action=wp_smushit_theme&amp;theme=<?php echo urlencode(get_template_directory()); ?>">Smush current theme</a> (<code><?php echo get_current_theme(); ?></code>)</p>-->
 
 
 </form>
