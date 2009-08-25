@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.2.3
+ * @version 1.2.4
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.2.3
+Version: 1.2.4
 Author URI: http://dialect.ca/?wp_smush_it
 */
 
@@ -66,7 +66,6 @@ function wp_smushit_install() {
 
 function wp_smushit_init() {
 	load_plugin_textdomain(WP_SMUSHIT_DOMAIN);
-//	print 'init';
 	wp_enqueue_script('common');
 }
 
@@ -267,8 +266,7 @@ function wp_smushit_resize_from_meta_data($meta) {
 		$store_absolute_path = false;
 		$file_path =  $upload_path . $file_path;
 	}
-	print '<pre>';
-	print $file_path . "\n";
+
 	list($meta['file'], $meta['wp_smushit']) = wp_smushit($file_path);
 
 	// strip absolute path for Wordpress >= 2.6.2

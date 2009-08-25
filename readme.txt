@@ -1,13 +1,13 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.2.3
+Version: 1.2.4
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae
 Tags: images, image, attachments, attachment
 Requires at least: 2.5
-Tested up to: 2.8.2
-Stable tag: 1.2.3
+Tested up to: 2.8.4
+Stable tag: 1.2.4
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 
@@ -48,6 +48,11 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 1. Done!
 
 == Changelog ==
+= 1.2.4 =
+* removed debugging code that was interfering with the Flash uploader
+
+= 1.2.3 =
+* bug fix
 
 = 1.2.2 =
 * updated to use Yahoo! hosted Smush.it service
