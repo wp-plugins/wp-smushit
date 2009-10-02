@@ -22,7 +22,8 @@ if ( !class_exists('Services_JSON') ) {
  * Constants
  */
 
-define('SMUSHIT_REQ_URL', 'http://smushit.com/ws.php?img=%s');
+//define('SMUSHIT_REQ_URL', 'http://smushit.com/ws.php?img=%s');
+define('SMUSHIT_REQ_URL', 'http://smushit.com/ysmush.it/ws.php?img=%s');
 
 define('SMUSHIT_BASE_URL', 'http://smushit.com/');
 
@@ -53,7 +54,7 @@ add_action('manage_media_custom_column', 'wp_smushit_custom_column', 10, 2);
 add_action('admin_menu', 'wp_smushit_add_pages');
 add_action('admin_init', 'wp_smushit_init');
 add_action('admin_action_wp_smushit_manual', 'wp_smushit_manual');
-//add_action('admin_action_wp_smushit_theme', 'wp_smushit_theme');
+add_action('admin_action_wp_smushit_theme', 'wp_smushit_theme');
 
 
 /**
@@ -70,7 +71,7 @@ function wp_smushit_init() {
 }
 
 function wp_smushit_add_pages() {
-//	add_submenu_page('themes.php', 'Smush.it', 'WP Smush.it', 8, dirname(__FILE__) . '/theme.php');
+	add_submenu_page('themes.php', 'Smush.it', 'WP Smush.it', 8, dirname(__FILE__) . '/theme.php');
 	add_options_page(__('WP Smush.it Options', WP_SMUSHIT_OPTIONS), 'WP Smush.it', 8, dirname(__FILE__) . '/options.php');
 	add_filter( 'plugin_action_links', 'wp_smushit_filter_plugin_actions', 10, 2 );
 }
@@ -91,8 +92,7 @@ function wp_smushit_options() {
  * Process all the images from a given theme
  */
 function wp_smushit_theme() {
-	//require_once('theme.php');
-	exit(0);
+	require_once('theme.php');
 }
 
 
@@ -193,10 +193,16 @@ function wp_smushit($file) {
 		$processed_url = SMUSHIT_BASE_URL . $processed_url;
 	}
 
-	$temp_file = wp_smushit_download($processed_url);
+	$temp_file = download_url($processed_url);
 
-	if ( false === $temp_file )
-		return array($file, __('Error updating file', WP_SMUSHIT_DOMAIN) );
+	if ( is_wp_error($temp_file) ) {
+		@unlink($tmp);
+		$results_msg = sprintf(__("Error downloading file (%s)", WP_SMUSHIT_DOMAIN),
+	                 $temp_file->get_error_message());
+		return array($file, $results_msg );
+	}
+
+
 
 	// check if Smush.it converted a GIF to a PNG
 	if( 1 == WP_SMUSHIT_GIF_TO_PNG && wp_smushit_did_gif_to_png($file, $data->dest) ) {
@@ -303,56 +309,6 @@ function wp_smushit_did_gif_to_png($orig, $new) {
 }
 
 /**
- * Download a remote file to a temp file.
- *
- * Used to download a processed image from Smush.it.
- *
- * @param   string          $remote_file     URL of the file to download
- * @return  string|boolean  Returns the temp file path on success or else FALSE
- */
-function wp_smushit_download($remote_file) {
-	$temp_file = tempnam( WP_CONTENT_DIR, '___' );
-
-	if ( function_exists('wp_remote_get') ) {
-		// try using WordPress's built-in HTTP class
-		$response = wp_remote_get($remote_file, array('user-agent' => WP_SMUSHIT_UA));
-
-		if ( 200 != wp_remote_retrieve_response_code($response) )
-			return false;
-
-		$data =  wp_remote_retrieve_body($response);
-
-		if ( function_exists('file_put_contents') ) {
-			if ( false === file_put_contents($temp_file, $data) )
-				return false;
-
-		} else { // PHP < 5
-			$fh = @fopen($temp_file, 'w');
-
-			if ( FALSE === $fh )
-				return false;
-
-			if ( FALSE === fwrite($fh, $data) )
-				return false;
-
-			fclose($fh);
-		}
-
-	} else {
-		wp_smushit_check_url_fopen();
-
-		// try using 'fopen' via 'copy'
-		if( FALSE === @copy( $remote_file, $temp_file ) )
-			return false;
-	}
-
-	chmod( $temp_file, 0644 );
-
-	return $temp_file;
-}
-
-
-/**
  * Post an image to Smush.it.
  *
  * @param   string          $file_url     URL of the file to send to Smush.it
@@ -363,13 +319,14 @@ function wp_smushit_post($file_url) {
 
 	$data = false;
 
-	if ( FALSE && function_exists('wp_remote_get') ) {
+	if ( function_exists('wp_remote_get') ) {
 		$response = wp_remote_get($req, array('user-agent' => WP_SMUSHIT_UA));
 
-		if ( 200 != wp_remote_retrieve_response_code($response) )
+		if ( 200 != wp_remote_retrieve_response_code($response) ) {
 			return false;
+		}
 
-		$data =  wp_remote_retrieve_body($response);
+		$data = wp_remote_retrieve_body($response);
 	} else {
 		wp_smushit_check_url_fopen();
 
@@ -397,14 +354,20 @@ function wp_smushit_post($file_url) {
  * Calls `wp_die()` if not, otherwise returns true.
  */
 function wp_smushit_check_url_fopen() {
-	if ( FALSE === function_exists('fopen') ||
-	     FALSE === ini_get('allow_url_fopen') ) {
-		$err = __('Remote fopen is not enabled (<a href="http://dialect.ca/code/wp-smushit/#fopen_note" target="_blank">more info</a>)', WP_SMUSHIT_DOMAIN);
-		wp_die($err);
-		return false;
+	$use_fopen = false;
+
+	if ( class_exists('WP_Http_Fopen') ) {
+		$use_fopen = WP_Http_Fopen::test();
+	} else {
+		$use_fopen = ( function_exists('fopen') && ini_get('allow_url_fopen') == true );
 	}
 
-	return true;
+	if ( !$use_fopen ) {
+		$err = __('Remote fopen is not enabled (<a href="http://dialect.ca/code/wp-smushit/#fopen_note" target="_blank">more info</a>)', WP_SMUSHIT_DOMAIN);
+		wp_die($err);
+	}
+
+	return $use_fopen;
 }
 
 /**
