@@ -8,22 +8,34 @@
  * @package WP_SmushIt
  */
 
+
+
+require_once (ABSPATH . 'wp-admin/includes/file.php');
+
+
 	if ( FALSE === current_user_can('edit_themes') ) {
 		wp_die(__('You don\'t have permission to work with themes.', WP_SMUSHIT_DOMAIN));
 	}
 
 	ob_start();
-	wp_enqueue_script( 'common');
+	//wp_enqueue_script( 'common');
 	$theme = null;
 	$theme_path = null;
 	$theme_url = null;
+
 
 	if ( isset($_GET['theme']) && !empty($_GET['theme']) ) {
 
 		$theme = attribute_escape($_GET['theme']);
 		$theme_path = get_theme_root() . '/' . $theme;
 		$theme_url = get_theme_root_uri() . '/' . $theme;
+
+//	$res = $wp_filesystem->dirlist($theme_path, true, true);
+
+
+
 	}
+
 
 ?>
 <div class="wrap">
@@ -61,9 +73,11 @@
 
 <p>Finished processing all the files in the <strong><?php echo $theme; ?></strong> theme.</p>
 
-<p><strong>Actions:</strong> <a href="<?php echo '?page=' . basename(dirname(__FILE__)) . '/theme.php'; ?>" title="Return to Plugin Installer" target="_parent">Smush another theme&rsquo;s assets</a></p>
+<p><strong>Actions:</strong> 
+	<a href="themes.php?page=<?php echo basename(dirname(__FILE__)) . '/theme.php&amp;theme=' . $theme; ?>" title="<?php _e('Smush other files within this theme', WP_SMUSHIT_DOMAIN); ?>" target="_parent"><?php _e('Smush other files within this theme', WP_SMUSHIT_DOMAIN); ?></a> |
 
-<!-- <p><strong>Actions:</strong> <a href="plugins.php?action=activate&amp;plugin=google-sitemap-generator%2Fsitemap.php&amp;_wpnonce=2b4ca1722c" title="Activate this plugin" target="_parent">Activate Plugin</a> | <a href="http://localhost/wp28/wp-admin/plugin-install.php" title="Return to Plugin Installer" target="_parent">Return to Plugin Installer</a></p> -->
+	<a href="<?php echo '?page=' . basename(dirname(__FILE__)) . '/theme.php'; ?>" title="<?php _e('Work with a different theme', WP_SMUSHIT_DOMAIN); ?>" target="_parent"><?php _e('Work with a different theme', WP_SMUSHIT_DOMAIN); ?></a>
+</p>
 
 
 <?php
@@ -71,10 +85,6 @@
 	elseif( $theme ):
 		$td = get_theme_data($theme_path  . '/style.css');
 
-		$handle = opendir($theme_path);
-		if ( FALSE === $handle ) {
-			wp_die('Error opening ' . $theme_path);
-		}
 ?>
 
 <form method="post" action="">
@@ -92,13 +102,17 @@
 	<tbody>
 <?php
 
-    while (false !== ($file = readdir($handle))) {
+	$theme_files = list_files($theme_path, 5);
+
+    foreach($theme_files as $file) {
 
 		if ( preg_match('/\.(jpg|jpeg|png|gif)$/i', $file) < 1 ) {
 			continue;
 		}
 
-		$file_url = $theme_url . '/' . $file;
+		$file = str_replace(TEMPLATEPATH, '', $file);
+
+		$file_url = $theme_url . $file;
 
 
 ?>
@@ -109,7 +123,7 @@
 <?php
 
     }
-    closedir($handle);
+  //  closedir($handle);
 ?>
 </table>
 
