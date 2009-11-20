@@ -23,8 +23,8 @@ if ( !class_exists('Services_JSON') ) {
  */
 
 //define('SMUSHIT_REQ_URL', 'http://smushit.com/ws.php?img=%s');
-//define('SMUSHIT_REQ_URL', 'http://smushit.com/ysmush.it/ws.php?img=%s');
-define('SMUSHIT_REQ_URL', 'http://ws1.adq.ac4.yahoo.com/ysmush.it/ws.php?img=%s');
+//define('SMUSHIT_REQ_URL', 'http://ws1.adq.ac4.yahoo.com/ysmush.it/ws.php?img=%s');
+define('SMUSHIT_REQ_URL', 'http://smushit.com/ysmush.it/ws.php?img=%s');
 
 define('SMUSHIT_BASE_URL', 'http://smushit.com/');
 
@@ -74,7 +74,7 @@ function wp_smushit_init() {
 
 function wp_smushit_add_pages() {
 	add_submenu_page('themes.php', 'Smush.it', 'WP Smush.it', 8, dirname(__FILE__) . '/theme.php');
-	add_options_page(__('WP Smush.it Options', WP_SMUSHIT_OPTIONS), 'WP Smush.it', 8, dirname(__FILE__) . '/options.php');
+	add_options_page(__('WP Smush.it Options', WP_SMUSHIT_DOMAIN), 'WP Smush.it', 8, dirname(__FILE__) . '/options.php');
 	add_filter( 'plugin_action_links', 'wp_smushit_filter_plugin_actions', 10, 2 );
 }
 
