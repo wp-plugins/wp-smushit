@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.2.6
+ * @version 1.2.7
  * @package WP_SmushIt
  */
 /*
@@ -9,11 +9,11 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.2.6
+Version: 1.2.7
 Author URI: http://dialect.ca/?wp_smush_it
 */
 
-if ( !class_exists('Services_JSON') ) {
+if ( !function_exists('json_encode') ) {
 	require_once('JSON/JSON.php');
 }
 
@@ -31,7 +31,7 @@ define('SMUSHIT_BASE_URL', 'http://smushit.com/');
 
 define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
 
-define('WP_SMUSHIT_UA', 'WP Smush.it/1.2.5 (+http://dialect.ca/code/wp-smushit)');
+define('WP_SMUSHIT_UA', 'WP Smush.it/1.2.7 (+http://dialect.ca/code/wp-smushit)');
 
 define('WP_SMUSHIT_GIF_TO_PNG', intval(get_option('wp_smushit_gif_to_png')));
 
@@ -39,7 +39,7 @@ define('WP_SMUSHIT_PLUGIN_DIR', dirname(plugin_basename(__FILE__)));
 
 if ( !defined('WP_CONTENT_URL') )
 	define('WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
-
+//PATH_SEPARATOR
 if ( !defined('WP_CONTENT_DIR') )
 	define('WP_CONTENT_DIR', ABSPATH . 'wp-content' );
 
@@ -153,7 +153,8 @@ function wp_smushit($file) {
 
 	// check that the file is within the WP_CONTENT_DIR
 	if ( 0 !== stripos($file_path, WP_CONTENT_DIR) || FALSE) {
-		$msg = sprintf(__("<span class='code'>%s</span> must be within the content directory (<span class='code'>%s</span>)", WP_SMUSHIT_DOMAIN), $file_path, WP_CONTENT_DIR);
+		$msg = sprintf(__("<span class='code'>%s</span> must be within the content directory (<span class='code'>%s</span>)", WP_SMUSHIT_DOMAIN), htmlentities($file_path), WP_CONTENT_DIR);
+
 		return array($file, $msg);
 	}
 
@@ -264,6 +265,7 @@ function wp_smushit_update_attachment($data, $ID) {
  * Called after `wp_generate_attachment_metadata` is completed.
  */
 function wp_smushit_resize_from_meta_data($meta) {
+
 	$file_path = $meta['file'];
 	$store_absolute_path = true;
 	$upload_dir = wp_upload_dir();
@@ -274,8 +276,12 @@ function wp_smushit_resize_from_meta_data($meta) {
 		$store_absolute_path = false;
 		$file_path =  $upload_path . $file_path;
 	}
+	
 
-	list($meta['file'], $meta['wp_smushit']) = wp_smushit($file_path);
+	list($file, $msg) = wp_smushit($file_path);
+
+	$meta['file'] = $file;
+	$meta['wp_smushit'] = $msg;
 
 	// strip absolute path for Wordpress >= 2.6.2
 	if ( FALSE === $store_absolute_path ) {
@@ -288,6 +294,7 @@ function wp_smushit_resize_from_meta_data($meta) {
 
 	// meta sizes don't contain a path, so we calculate one
 	$base_dir = dirname($file_path) . '/';
+
 
 	foreach($meta['sizes'] as $size => $data) {
 		list($smushed_file, $results) = wp_smushit($base_dir . $data['file']);
