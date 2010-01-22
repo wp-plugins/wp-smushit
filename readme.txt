@@ -107,3 +107,4 @@ Written by Alex Dunae at Dialect ([dialect.ca](http://dialect.ca/?wp_smush_it), 
 WP Smush.it includes a copy of the [PEAR JSON library](http://pear.php.net/pepr/pepr-proposal-show.php?id=198) written by Michal Migurski.
 
 Smush.it was created by [Nicole Sullivan](http://www.stubbornella.org/content/) and [Stoyan Stefanov](http://phpied.com/).
+
