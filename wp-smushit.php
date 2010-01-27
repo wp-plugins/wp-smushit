@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.2.7
+ * @version 1.2.8
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.2.7
+Version: 1.2.8
 Author URI: http://dialect.ca/?wp_smush_it
 */
 
@@ -31,7 +31,7 @@ define('SMUSHIT_BASE_URL', 'http://smushit.com/');
 
 define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
 
-define('WP_SMUSHIT_UA', 'WP Smush.it/1.2.7 (+http://dialect.ca/code/wp-smushit)');
+define('WP_SMUSHIT_UA', 'WP Smush.it/1.2.8 (+http://dialect.ca/code/wp-smushit)');
 
 define('WP_SMUSHIT_GIF_TO_PNG', intval(get_option('wp_smushit_gif_to_png')));
 
@@ -133,7 +133,7 @@ function wp_smushit_manual() {
  */
 function wp_smushit($file) {
 	// dont't run on localhost
-	if( '127.0.0.1' == $_SERVER['SERVER_ADDR'] && FALSE )
+	if( '127.0.0.1' == $_SERVER['SERVER_ADDR'] )
 		return array($file, __('Not processed (local file)', WP_SMUSHIT_DOMAIN));
 
 	// canonicalize path
@@ -152,7 +152,7 @@ function wp_smushit($file) {
 	}
 
 	// check that the file is within the WP_CONTENT_DIR
-	if ( 0 !== stripos($file_path, WP_CONTENT_DIR) || FALSE) {
+	if ( 0 !== stripos($file_path, realpath(WP_CONTENT_DIR)) ) {
 		$msg = sprintf(__("<span class='code'>%s</span> must be within the content directory (<span class='code'>%s</span>)", WP_SMUSHIT_DOMAIN), htmlentities($file_path), WP_CONTENT_DIR);
 
 		return array($file, $msg);
