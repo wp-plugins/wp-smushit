@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.2.8
+ * @version 1.2.9
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.2.8
+Version: 1.2.9
 Author URI: http://dialect.ca/?wp_smush_it
 */
 
@@ -24,14 +24,14 @@ if ( !function_exists('json_encode') ) {
 
 //define('SMUSHIT_REQ_URL', 'http://smushit.com/ws.php?img=%s');
 //define('SMUSHIT_REQ_URL', 'http://ws1.adq.ac4.yahoo.com/ysmush.it/ws.php?img=%s');
-define('SMUSHIT_REQ_URL', 'http://smushit.com/ysmush.it/ws.php?img=%s');
+define('SMUSHIT_REQ_URL', 'http://www.smushit.com/ysmush.it/ws.php?img=http://dialect.ca/inc/dialect_logo.png');
 
-define('SMUSHIT_BASE_URL', 'http://smushit.com/');
+define('SMUSHIT_BASE_URL', 'http://www.smushit.com/');
 
 
 define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
 
-define('WP_SMUSHIT_UA', 'WP Smush.it/1.2.8 (+http://dialect.ca/code/wp-smushit)');
+define('WP_SMUSHIT_UA', 'WP Smush.it/1.2.9 (+http://dialect.ca/code/wp-smushit)');
 
 define('WP_SMUSHIT_GIF_TO_PNG', intval(get_option('wp_smushit_gif_to_png')));
 

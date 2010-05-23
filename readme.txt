@@ -1,13 +1,13 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.2.8
+Version: 1.2.9
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae
 Tags: images, image, attachments, attachment
 Requires at least: 2.5
-Tested up to: 2.9.1
-Stable tag: 1.2.8
+Tested up to: 2.9.2
+Stable tag: 1.2.9
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 
@@ -48,6 +48,9 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 1. Done!
 
 == Changelog ==
+= 1.2.9 = 
+* updated Smush.it endpoint URL
+
 = 1.2.8 =
 * fixed path checking on Windows servers
 
@@ -105,7 +108,7 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 
 == Contact and Credits ==
 
-Written by Alex Dunae at Dialect ([dialect.ca](http://dialect.ca/?wp_smush_it), e-mail 'alex' at 'dialect dot ca'), 2008-09.
+Written by Alex Dunae at Dialect ([dialect.ca](http://dialect.ca/?wp_smush_it), e-mail 'alex' at 'dialect dot ca'), 2008-10.
 
 WP Smush.it includes a copy of the [PEAR JSON library](http://pear.php.net/pepr/pepr-proposal-show.php?id=198) written by Michal Migurski.
 
