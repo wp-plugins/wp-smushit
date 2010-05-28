@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.2.10
+ * @version 1.3.0
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.2.10
+Version: 1.3.0
 Author URI: http://dialect.ca/?wp_smush_it
 */
 
@@ -17,44 +17,27 @@ if ( !function_exists('json_encode') ) {
 	require_once('JSON/JSON.php');
 }
 
-
 /**
  * Constants
  */
-
-//define('SMUSHIT_REQ_URL', 'http://smushit.com/ws.php?img=%s');
-//define('SMUSHIT_REQ_URL', 'http://ws1.adq.ac4.yahoo.com/ysmush.it/ws.php?img=%s');
 define('SMUSHIT_REQ_URL', 'http://www.smushit.com/ysmush.it/ws.php?img=%s');
-
 define('SMUSHIT_BASE_URL', 'http://www.smushit.com/');
 
-
 define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
-
-define('WP_SMUSHIT_UA', 'WP Smush.it/1.2.9 (+http://dialect.ca/code/wp-smushit)');
-
+define('WP_SMUSHIT_UA', 'WP Smush.it/1.3.0 (+http://dialect.ca/code/wp-smushit)');
 define('WP_SMUSHIT_GIF_TO_PNG', intval(get_option('wp_smushit_gif_to_png')));
-
 define('WP_SMUSHIT_PLUGIN_DIR', dirname(plugin_basename(__FILE__)));
 
-if ( !defined('WP_CONTENT_URL') )
-	define('WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
-//PATH_SEPARATOR
-if ( !defined('WP_CONTENT_DIR') )
-	define('WP_CONTENT_DIR', ABSPATH . 'wp-content' );
 
 /**
  * Hooks
  */
-
 register_activation_hook(__FILE__,'wp_smushit_install');
 
 add_filter('wp_generate_attachment_metadata', 'wp_smushit_resize_from_meta_data');
-
 add_filter('manage_media_columns', 'wp_smushit_columns');
 add_action('manage_media_custom_column', 'wp_smushit_custom_column', 10, 2);
-add_action('admin_menu', 'wp_smushit_add_pages');
-add_action('admin_init', 'wp_smushit_init');
+add_action('admin_init', 'wp_smushit_admin_init');
 add_action('admin_action_wp_smushit_manual', 'wp_smushit_manual');
 //add_action('admin_action_wp_smushit_theme', 'wp_smushit_theme');
 
@@ -62,20 +45,14 @@ add_action('admin_action_wp_smushit_manual', 'wp_smushit_manual');
 /**
  * Plugin admin functions
  */
-
 function wp_smushit_install() {
-	add_option('wp_smushit_gif_to_png', 0);
+	// clean up from previous versions
+	delete_option('wp_smushit_gif_to_png');
 }
 
-function wp_smushit_init() {
+function wp_smushit_admin_init() {
 	load_plugin_textdomain(WP_SMUSHIT_DOMAIN);
 	wp_enqueue_script('common');
-}
-
-function wp_smushit_add_pages() {
-	//add_submenu_page('themes.php', 'Smush.it', 'WP Smush.it', 8, dirname(__FILE__) . '/theme.php');
-	add_options_page(__('WP Smush.it Options', WP_SMUSHIT_DOMAIN), 'WP Smush.it', 8, dirname(__FILE__) . '/options.php');
-	add_filter( 'plugin_action_links', 'wp_smushit_filter_plugin_actions', 10, 2 );
 }
 
 function wp_smushit_filter_plugin_actions($links, $file) {
@@ -84,10 +61,6 @@ function wp_smushit_filter_plugin_actions($links, $file) {
 		array_unshift( $links, $settings_link ); // before other links
 	}
 	return $links;
-}
-
-function wp_smushit_options() {
-	include_once 'options.php';
 }
 
 /**
@@ -205,17 +178,6 @@ function wp_smushit($file) {
 		return array($file, $results_msg );
 	}
 
-
-
-	// check if Smush.it converted a GIF to a PNG
-	if( 1 == WP_SMUSHIT_GIF_TO_PNG && wp_smushit_did_gif_to_png($file, $data->dest) ) {
-		$file = preg_replace('/.gif$/i', '.png', $file);
-		$file_path = preg_replace('/.gif$/i', '.png', $file_path);
-
-		if ( FALSE === has_filter('wp_update_attachment_metadata', 'wp_smushit_update_attachment') )
-			add_filter('wp_update_attachment_metadata', 'wp_smushit_update_attachment', 10, 2);
-	}
-
 	@rename( $temp_file, $file_path );
 
 	$savings = intval($data->src_size) - intval($data->dest_size);
@@ -227,32 +189,6 @@ function wp_smushit($file) {
 	                 $savings_str);
 
 	return array($file, $results_msg);
-}
-
-/**
- * Update the attachment's meta data after being smushed.
- *
- * This is only needed when GIFs become PNGs so we add the filter near
- * the end of `wp_smushit()`. It's used by the `wp_update_attachment_metadata`
- * hook, which is called after the `wp_generate_attachment_metadata` on upload.
- */
-function wp_smushit_update_attachment($data, $ID) {
-	$orig_file = get_attached_file( $ID );
-
-	if( wp_smushit_did_gif_to_png($orig_file,  $data['file']) ) {
-		update_attached_file( $ID, $data['file'] );
-
-		// get_media_item() uses the GUID for a display title so we should
-		// update the GUID here
-		$post = get_post( $ID );
-		$guid = preg_replace('/.gif$/i', '.png', $post->guid);
-
-		wp_update_post( array('ID' => $ID,
-		                      'post_mime_type' => 'image/png',
-		                      'guid' => $guid) );
-	}
-
-	return $data;
 }
 
 
@@ -306,16 +242,6 @@ function wp_smushit_resize_from_meta_data($meta) {
 	return $meta;
 }
 
-/**
- * Compare file names to see if the extension changed from `.gif` to `.png`.
- *
- * @returns bool
- */
-function wp_smushit_did_gif_to_png($orig, $new) {
-	return (0 === stripos(strrev($new), 'gnp.') &&
-	        0 === stripos(strrev($orig), 'fig.') );
-
-}
 
 /**
  * Post an image to Smush.it.
@@ -331,53 +257,18 @@ function wp_smushit_post($file_url) {
 	if ( function_exists('wp_remote_get') ) {
 		$response = wp_remote_get($req, array('user-agent' => WP_SMUSHIT_UA));
 
-		if ( 200 != wp_remote_retrieve_response_code($response) ) {
-			return false;
+		if( is_wp_error( $response ) ) {
+			wp_die( $response );
 		}
 
 		$data = wp_remote_retrieve_body($response);
 	} else {
-		wp_smushit_check_url_fopen();
-
-		$fh = @fopen( $req, 'r' ); // post to Smush.it
-
-		if ( !$fh )
-			return false;
-
-		if( FALSE && function_exists('stream_get_contents') ) {
-			$data = stream_get_contents($fh);
-		} else {
-			while( FALSE === feof($fh) ) {
-				$data .= fread($fh, 8192);
-			}
-		}
-
-		fclose( $fh );
+		wp_die( __('WP Smush.it requires WordPress 2.8 or greater', WP_SMUSHIT_DOMAIN) );
 	}
-
+	
 	return $data;
 }
 
-/**
- * Check if `allow_url_fopen` is `true`.
- * Calls `wp_die()` if not, otherwise returns true.
- */
-function wp_smushit_check_url_fopen() {
-	$use_fopen = false;
-
-	if ( class_exists('WP_Http_Fopen') ) {
-		$use_fopen = WP_Http_Fopen::test();
-	} else {
-		$use_fopen = ( function_exists('fopen') && ini_get('allow_url_fopen') == true );
-	}
-
-	if ( !$use_fopen ) {
-		$err = __('Remote fopen is not enabled (<a href="http://dialect.ca/code/wp-smushit/#fopen_note" target="_blank">more info</a>)', WP_SMUSHIT_DOMAIN);
-		wp_die($err);
-	}
-
-	return $use_fopen;
-}
 
 /**
  * Print column header for Smush.it results in the media library using
