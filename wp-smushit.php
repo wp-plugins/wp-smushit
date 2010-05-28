@@ -125,7 +125,7 @@ function wp_smushit($file) {
 	}
 
 	// check that the file is within the WP_CONTENT_DIR
-	if ( 0 !== stripos($file_path, realpath(WP_CONTENT_DIR)) ) {
+	if ( 0 !== stripos(realpath($file_path), realpath(WP_CONTENT_DIR)) ) {
 		$msg = sprintf(__("<span class='code'>%s</span> must be within the content directory (<span class='code'>%s</span>)", WP_SMUSHIT_DOMAIN), htmlentities($file_path), WP_CONTENT_DIR);
 
 		return array($file, $msg);
