@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.3.0
+ * @version 1.3.1
  * @package WP_SmushIt
  */
 /*
@@ -9,12 +9,16 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.3.0
+Version: 1.3.1
 Author URI: http://dialect.ca/?wp_smush_it
 */
 
 if ( !function_exists('json_encode') ) {
 	require_once('JSON/JSON.php');
+}
+
+if ( !function_exists('download_url') ) {
+	require_once(ABSPATH . 'wp-admin/includes/file.php');
 }
 
 /**
@@ -125,14 +129,17 @@ function wp_smushit($file) {
 	}
 
 	// check that the file is within the WP_CONTENT_DIR
-	if ( 0 !== stripos(realpath($file_path), realpath(WP_CONTENT_DIR)) ) {
-		$msg = sprintf(__("<span class='code'>%s</span> must be within the content directory (<span class='code'>%s</span>)", WP_SMUSHIT_DOMAIN), htmlentities($file_path), WP_CONTENT_DIR);
+	$upload_dir = wp_upload_dir();
+	$wp_upload_dir = $upload_dir['basedir'];
+	$wp_upload_url = $upload_dir['baseurl'];
+	if ( 0 !== stripos(realpath($file_path), realpath($wp_upload_dir)) ) {
+		$msg = sprintf(__("<span class='code'>%s</span> must be within the content directory (<span class='code'>%s</span>)", WP_SMUSHIT_DOMAIN), htmlentities($file_path), $wp_upload_dir);
 
 		return array($file, $msg);
 	}
 
 	// determine the public URL
-	$file_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $file );
+	$file_url = str_replace( $wp_upload_dir, $wp_upload_url, $file );
 
 	$data = wp_smushit_post($file_url);
 
@@ -253,8 +260,9 @@ function wp_smushit_post($file_url) {
 	$req = sprintf( SMUSHIT_REQ_URL, urlencode( $file_url ) );
 
 	$data = false;
-
+	
 	if ( function_exists('wp_remote_get') ) {
+		add_filter('http_request_timeout', 'wp_smushit_http_request_timeout');
 		$response = wp_remote_get($req, array('user-agent' => WP_SMUSHIT_UA));
 
 		if( is_wp_error( $response ) ) {
@@ -262,6 +270,7 @@ function wp_smushit_post($file_url) {
 		}
 
 		$data = wp_remote_retrieve_body($response);
+		remove_filter('http_request_timeout', 'wp_smushit_http_request_timeout');
 	} else {
 		wp_die( __('WP Smush.it requires WordPress 2.8 or greater', WP_SMUSHIT_DOMAIN) );
 	}
@@ -311,4 +320,10 @@ function wp_smushit_custom_column($column_name, $id) {
 			         __('Smush.it now!', WP_SMUSHIT_DOMAIN));
     	}
     }
+}
+/**
+ * http_request_timeout filter -- bumpbed up to 25 seconds for larger images
+ */
+function wp_smushit_http_request_timeout($time) {
+	return 25;
 }
