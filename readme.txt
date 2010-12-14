@@ -46,9 +46,10 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 1. Done!
 
 == Changelog ==
-= 1.4.0
+
+= 1.3.1
 * handle images stored on other domains -- props to [ka-ri-ne](http://wordpress.org/support/profile/ka-ri-ne) for the fix
-* avoid time-out errors when working with larger files -- props to [Veliki Šiljegovac](http://wordpress.org/support/profile/dimadin) for the fix
+* avoid time-out errors when working with larger files -- props to [Milan Dinić](http://wordpress.org/support/profile/dimadin) for the fix
 
 = 1.2.10 = 
 * removed testing link
