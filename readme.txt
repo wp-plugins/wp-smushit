@@ -7,7 +7,7 @@ Contributors: alexdunae
 Tags: images, image, attachments, attachment
 Requires at least: 2.8
 Tested up to: 3.0.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 
@@ -46,6 +46,10 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 1. Done!
 
 == Changelog ==
+
+= 1.3.2
+* removed realpath() call
+* IPv6 compat
 
 = 1.3.1
 * handle images stored on other domains -- props to [ka-ri-ne](http://wordpress.org/support/profile/ka-ri-ne) for the fix
@@ -114,7 +118,7 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 
 == Contact and Credits ==
 
-Written by Alex Dunae at Dialect ([dialect.ca](http://dialect.ca/?wp_smush_it), e-mail 'alex' at 'dialect dot ca'), 2008-10.
+Written by Alex Dunae at Dialect ([dialect.ca](http://dialect.ca/?wp_smush_it), e-mail 'alex' at 'dialect dot ca'), 2008-11.
 
 WP Smush.it includes a copy of the [PEAR JSON library](http://pear.php.net/pepr/pepr-proposal-show.php?id=198) written by Michal Migurski.
 
