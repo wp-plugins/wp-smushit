@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.3.1
+ * @version 1.3.2
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.3.1
+Version: 1.3.2
 Author URI: http://dialect.ca/?wp_smush_it
 */
 
@@ -109,16 +109,20 @@ function wp_smushit_manual() {
  * @returns array
  */
 function wp_smushit($file) {
-	// dont't run on localhost
-	if( '127.0.0.1' == $_SERVER['SERVER_ADDR'] )
+	// dont't run on localhost, IPv4 and IPv6 checks
+	if( in_array($_SERVER['SERVER_ADDR'], array('127.0.0.1', '::1')) )
 		return array($file, __('Not processed (local file)', WP_SMUSHIT_DOMAIN));
 
-	// canonicalize path
-	$file_path = realpath($file);
+	// canonicalize path - disabled 2011-02-1 troubleshooting 'Could not find...' errors.
+	// From the PHP docs: "The running script must have executable permissions on 
+	// all directories in the hierarchy, otherwise realpath() will return FALSE."
+	// $file_path = realpath($file);
+	
+	$file_path = $file;
 
 	// check that the file exists
 	if ( FALSE === file_exists($file_path) || FALSE === is_file($file_path) ) {
-		$msg = sprintf(__("Could not $file_path find <span class='code'>%s</span>", WP_SMUSHIT_DOMAIN), $file_path);
+		$msg = sprintf(__("Could not find <span class='code'>%s</span>", WP_SMUSHIT_DOMAIN), $file_path);
 		return array($file, $msg);
 	}
 
