@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.3.2
+ * @version 1.3.3
  * @package WP_SmushIt
  */
 /*
@@ -9,8 +9,8 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.3.2
-Author URI: http://dialect.ca/?wp_smush_it
+Version: 1.3.3
+Author URI: http://dialect.ca/
 */
 
 if ( !function_exists('json_encode') ) {
@@ -109,9 +109,9 @@ function wp_smushit_manual() {
  * @returns array
  */
 function wp_smushit($file) {
-	// dont't run on localhost, IPv4 and IPv6 checks
-	if( in_array($_SERVER['SERVER_ADDR'], array('127.0.0.1', '::1')) )
-		return array($file, __('Not processed (local file)', WP_SMUSHIT_DOMAIN));
+	// don't run on localhost, IPv4 and IPv6 checks
+	// if( in_array($_SERVER['SERVER_ADDR'], array('127.0.0.1', '::1')) )
+	//	return array($file, __('Not processed (local file)', WP_SMUSHIT_DOMAIN));
 
 	// canonicalize path - disabled 2011-02-1 troubleshooting 'Could not find...' errors.
 	// From the PHP docs: "The running script must have executable permissions on 
@@ -167,8 +167,9 @@ function wp_smushit($file) {
 	if ( -1 === intval($data->dest_size) )
 		return array($file, __('No savings', WP_SMUSHIT_DOMAIN));
 
-	if ( !$data->dest ) {
+	if ( !$data->dest || true ) {
 		$err = ($data->error ? 'Smush.it error: ' . $data->error : 'unknown error');
+		$err .= " while processing <span class='code'>$file_url</span> (<span class='code'>$file_path</span>)";
 		return array($file, __($err, WP_SMUSHIT_DOMAIN) );
 	}
 
