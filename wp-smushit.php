@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.3.3
+ * @version 1.3.4
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.3.3
+Version: 1.3.4
 Author URI: http://dialect.ca/
 */
 
@@ -167,7 +167,7 @@ function wp_smushit($file) {
 	if ( -1 === intval($data->dest_size) )
 		return array($file, __('No savings', WP_SMUSHIT_DOMAIN));
 
-	if ( !$data->dest || true ) {
+	if ( !$data->dest ) {
 		$err = ($data->error ? 'Smush.it error: ' . $data->error : 'unknown error');
 		$err .= " while processing <span class='code'>$file_url</span> (<span class='code'>$file_path</span>)";
 		return array($file, __($err, WP_SMUSHIT_DOMAIN) );
