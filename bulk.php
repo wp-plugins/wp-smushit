@@ -44,7 +44,7 @@
         wp_update_attachment_metadata( $attachment->ID, $meta );
 
         // rate limiting is good manners, let's be nice to Yahoo!
-        // sleep(0.5); 
+        sleep(0.5); 
         @ob_flush();
         flush();
       }

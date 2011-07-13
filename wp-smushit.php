@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.4.0
+ * @version 1.4.1
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.4.0
+Version: 1.4.1
 Author URI: http://dialect.ca/
 */
 
@@ -28,16 +28,13 @@ define('SMUSHIT_REQ_URL', 'http://www.smushit.com/ysmush.it/ws.php?img=%s');
 define('SMUSHIT_BASE_URL', 'http://www.smushit.com/');
 
 define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
-define('WP_SMUSHIT_UA', 'WP Smush.it/1.4.0 (+http://dialect.ca/code/wp-smushit)');
-define('WP_SMUSHIT_GIF_TO_PNG', intval(get_option('wp_smushit_gif_to_png')));
+define('WP_SMUSHIT_UA', 'WP Smush.it/1.4.1 (+http://dialect.ca/code/wp-smushit)');
 define('WP_SMUSHIT_PLUGIN_DIR', dirname(plugin_basename(__FILE__)));
 
 
 /**
  * Hooks
  */
-register_activation_hook(__FILE__,'wp_smushit_install');
-
 add_filter('wp_generate_attachment_metadata', 'wp_smushit_resize_from_meta_data', 10, 2);
 add_filter('manage_media_columns', 'wp_smushit_columns');
 add_action('manage_media_custom_column', 'wp_smushit_custom_column', 10, 2);
@@ -47,11 +44,6 @@ add_action('admin_action_wp_smushit_manual', 'wp_smushit_manual');
 /**
  * Plugin admin functions
  */
-function wp_smushit_install() {
-	// clean up from previous versions
-	delete_option('wp_smushit_gif_to_png');
-}
-
 function wp_smushit_admin_init() {
 	load_plugin_textdomain(WP_SMUSHIT_DOMAIN);
 	wp_enqueue_script('common');
