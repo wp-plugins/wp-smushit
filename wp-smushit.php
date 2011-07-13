@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.3.4
+ * @version 1.3.5
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.3.4
+Version: 1.3.5
 Author URI: http://dialect.ca/
 */
 
@@ -28,7 +28,7 @@ define('SMUSHIT_REQ_URL', 'http://www.smushit.com/ysmush.it/ws.php?img=%s');
 define('SMUSHIT_BASE_URL', 'http://www.smushit.com/');
 
 define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
-define('WP_SMUSHIT_UA', 'WP Smush.it/1.3.0 (+http://dialect.ca/code/wp-smushit)');
+define('WP_SMUSHIT_UA', 'WP Smush.it/1.3.5 (+http://dialect.ca/code/wp-smushit)');
 define('WP_SMUSHIT_GIF_TO_PNG', intval(get_option('wp_smushit_gif_to_png')));
 define('WP_SMUSHIT_PLUGIN_DIR', dirname(plugin_basename(__FILE__)));
 
@@ -38,13 +38,11 @@ define('WP_SMUSHIT_PLUGIN_DIR', dirname(plugin_basename(__FILE__)));
  */
 register_activation_hook(__FILE__,'wp_smushit_install');
 
-add_filter('wp_generate_attachment_metadata', 'wp_smushit_resize_from_meta_data');
+add_filter('wp_generate_attachment_metadata', 'wp_smushit_resize_from_meta_data', 10, 2);
 add_filter('manage_media_columns', 'wp_smushit_columns');
 add_action('manage_media_custom_column', 'wp_smushit_custom_column', 10, 2);
 add_action('admin_init', 'wp_smushit_admin_init');
 add_action('admin_action_wp_smushit_manual', 'wp_smushit_manual');
-//add_action('admin_action_wp_smushit_theme', 'wp_smushit_theme');
-
 
 /**
  * Plugin admin functions
@@ -57,23 +55,28 @@ function wp_smushit_install() {
 function wp_smushit_admin_init() {
 	load_plugin_textdomain(WP_SMUSHIT_DOMAIN);
 	wp_enqueue_script('common');
+		
 }
 
-function wp_smushit_filter_plugin_actions($links, $file) {
-	if ( 'wp-smushit/wp-smushit.php' === $file ) {
-		$settings_link = '<a href="options-general.php?page=wp-smushit/options.php">' . __('Settings') . '</a>';
-		array_unshift( $links, $settings_link ); // before other links
-	}
-	return $links;
+function wp_smushit_admin_menu() {
+  add_media_page( 'Bulk Smush.it', 'Bulk Smush.it', 'edit_others_posts', 'wp-smushit-bulk', 'wp_smushit_bulk_preview');
 }
+add_action( 'admin_menu', 'wp_smushit_admin_menu' );
 
-/**
- * Process all the images from a given theme
- */
-function wp_smushit_theme() {
-	require_once('theme.php');
+function wp_smushit_bulk_preview() {
+  if ( function_exists( 'apache_setenv' ) ) {
+    @apache_setenv('no-gzip', 1);
+  }
+  @ini_set('output_buffering','on');
+  @ini_set('zlib.output_compression', 0);
+  @ini_set('implicit_flush', 1);
+  $attachments = get_posts( array(
+    'numberposts' => -1,
+    'post_type' => 'attachment',
+    'post_mime_type' => 'image'
+  ));
+  require( dirname(__FILE__) . '/bulk.php' );
 }
-
 
 /**
  * Manually process an image from the Media Library
@@ -91,7 +94,7 @@ function wp_smushit_manual() {
 
 	$original_meta = wp_get_attachment_metadata( $attachment_ID );
 
-	$new_meta = wp_smushit_resize_from_meta_data( $original_meta );
+	$new_meta = wp_smushit_resize_from_meta_data( $original_meta, $attachment_ID );
 	wp_update_attachment_metadata( $attachment_ID, $new_meta );
 
 	$sendback = wp_get_referer();
@@ -212,8 +215,7 @@ function wp_smushit($file) {
  *
  * Called after `wp_generate_attachment_metadata` is completed.
  */
-function wp_smushit_resize_from_meta_data($meta) {
-
+function wp_smushit_resize_from_meta_data($meta, $ID = null) {
 	$file_path = $meta['file'];
 	$store_absolute_path = true;
 	$upload_dir = wp_upload_dir();
@@ -224,7 +226,6 @@ function wp_smushit_resize_from_meta_data($meta) {
 		$store_absolute_path = false;
 		$file_path =  $upload_path . $file_path;
 	}
-	
 
 	list($file, $msg) = wp_smushit($file_path);
 
@@ -327,7 +328,7 @@ function wp_smushit_custom_column($column_name, $id) {
     }
 }
 /**
- * http_request_timeout filter -- bumpbed up to 25 seconds for larger images
+ * http_request_timeout filter -- bumped up to 25 seconds for larger images
  */
 function wp_smushit_http_request_timeout($time) {
 	return 25;
