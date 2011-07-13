@@ -15,6 +15,8 @@
   <p>We found <?php echo sizeof($attachments); ?> images in your media library. Be forewarned, <strong>it will take <em>at least</em> <?php echo (sizeof($attachments) * 3 / 60); ?> minutes</strong> to process all these images.</p>
   
   <p><em>N.B. If your server <tt>gzip</tt>s content you may not see the progress updates as your files are processed.</em></p>
+  
+  <p><strong>This is an experimental feature.</strong> Please post any feedback to the <a href="http://wordpress.org/tags/wp-smushit">WordPress WP Smush.it forums</a>.</p>
 
   <form method="post" action="">
     <?php wp_nonce_field( 'wp-smushit-bulk', '_wp-smushit-bulk-nonce'); ?>

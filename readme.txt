@@ -1,13 +1,13 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.3.4
+Version: 1.4.0
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae
 Tags: images, image, attachments, attachment
 Requires at least: 2.8
-Tested up to: 3.0.4
-Stable tag: 1.3.4
+Tested up to: 3.2.1
+Stable tag: 1.4.0
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 
@@ -28,6 +28,8 @@ Every image you add to a page or post will be automatically run through Smush.it
 = Existing images =
 You can also run your existing images through Smush.it via the WordPress `Media Library`.  Click on the `Smush.it now!` link for any image you'd like to smush.
 
+As of version 1.3.5 there is a new, experimental `Bulk Smush.it` feature.  You can find the link under the `Media Library` tab.
+
 = Privacy = 
 Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on their <a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html">FAQ</a>).
 
@@ -47,6 +49,11 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 
 == Changelog ==
 
+= 1.4.0
+* bulk smush.it
+
+= 1.3.4
+* bug fixes
 
 = 1.3.3
 * add debugging output on failure
