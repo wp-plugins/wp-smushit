@@ -8,11 +8,11 @@
   else: 
     if ( empty($_POST) ): // instructions page
 ?>
-  <p>This tool will run all of the images in your media library through the WP Smush.it web service.</p>
+  <p>This tool will run all of the images in your media library through the WP Smush.it web service.  It won't re-smush images that were successfully smushed before. It will retry images that were not successfully smushed.</p>
   
   <p>It uploads each and every file to Yahoo! and then downloads the resulting file. It can take a long time.</p>
   
-  <p>We found <?php echo sizeof($attachments); ?> images in your media library. Be forewarned, <strong>it will take <em>at least</em> <?php echo (sizeof($attachments) * 3 / 60); ?> minutes</strong> to process all these images.</p>
+  <p>We found <?php echo sizeof($attachments); ?> images in your media library. Be forewarned, <strong>it will take <em>at least</em> <?php echo (sizeof($attachments) * 3 / 60); ?> minutes</strong> to process all these images if they have never been smushed before.</p>
   
   <p><em>N.B. If your server <tt>gzip</tt>s content you may not see the progress updates as your files are processed.</em></p>
   
@@ -35,9 +35,33 @@
 
       foreach( $attachments as $attachment ) {
         printf( "<p>Processing <strong>%s</strong>&hellip;<br>", esc_html($attachment->post_name) );
-        $meta = wp_smushit_resize_from_meta_data( wp_get_attachment_metadata( $attachment->ID, true ), $attachment->ID );
-        foreach( $meta['sizes'] as $size ) {
-          printf( "– %s<br>", $size['wp_smushit'] );
+        $original_meta = wp_get_attachment_metadata( $attachment->ID, true );
+            
+        $meta = wp_smushit_resize_from_meta_data( $original_meta, $attachment->ID, false );
+
+        printf( "– %dx%d: ", intval($meta['width']), intval($meta['height']) );
+        
+        if ( $original_meta['wp_smushit'] == $meta['wp_smushit'] ) {
+          echo 'already smushed';
+        } else {
+          echo $meta['wp_smushit'];
+        }
+        echo '<br>';
+
+
+
+        if ( isset( $meta['sizes'] ) && is_array( $meta['sizes'] ) ) {
+          foreach( $meta['sizes'] as $size_name => $size  ) {
+            printf( "– %dx%d: ", intval($size['width']), intval($size['height']) );
+            
+            if ( $original_meta['sizes'][$size_name]['wp_smushit'] == $size['wp_smushit'] ) {
+              echo 'already smushed';
+            } else {
+              echo $size['wp_smushit'];
+            }
+            echo '<br>';
+            
+          }
         }
         echo "</p>";
         
