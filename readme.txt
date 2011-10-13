@@ -49,26 +49,26 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 
 == Changelog ==
 
-= 1.4.2
+= 1.4.2 =
 * bulk smush.it will no longer re-smush images that were successful
 
-= 1.4.1
+= 1.4.1 =
 * bug fixes
 
-= 1.4.0
+= 1.4.0 =
 * bulk smush.it
 
-= 1.3.4
+= 1.3.4 =
 * bug fixes
 
-= 1.3.3
+= 1.3.3 =
 * add debugging output on failure
 
-= 1.3.2
+= 1.3.2 =
 * removed realpath() call
 * IPv6 compat
 
-= 1.3.1
+= 1.3.1 =
 * handle images stored on other domains -- props to [ka-ri-ne](http://wordpress.org/support/profile/ka-ri-ne) for the fix
 * avoid time-out errors when working with larger files -- props to [Milan Dinić](http://wordpress.org/support/profile/dimadin) for the fix
 
