@@ -1,6 +1,6 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.4.2
+Version: 1.4.3
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae

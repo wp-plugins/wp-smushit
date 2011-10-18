@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrate the Smush.it API into WordPress.
- * @version 1.4.2
+ * @version 1.4.3
  * @package WP_SmushIt
  */
 /*
@@ -9,7 +9,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.4.2
+Version: 1.4.3
 Author URI: http://dialect.ca/
 */
 
@@ -222,6 +222,7 @@ function wp_smushit_should_resmush($previous_status) {
  */
 function wp_smushit_resize_from_meta_data($meta, $ID = null, $force_resmush = true) {
 	$file_path = $meta['file'];
+
 	$store_absolute_path = true;
 	$upload_dir = wp_upload_dir();
 	$upload_path = trailingslashit( $upload_dir['basedir'] );
@@ -234,11 +235,9 @@ function wp_smushit_resize_from_meta_data($meta, $ID = null, $force_resmush = tr
 
   if ( $force_resmush || wp_smushit_should_resmush(  @$meta['wp_smushit'] ) ) {
 	  list($file, $msg) = wp_smushit($file_path);
-  	$meta['file'] = $file;
   	$meta['wp_smushit'] = $msg;
   }
-
-
+  
 	// strip absolute path for Wordpress >= 2.6.2
 	if ( FALSE === $store_absolute_path ) {
 		$meta['file'] = str_replace($upload_path, '', $meta['file']);
@@ -249,19 +248,16 @@ function wp_smushit_resize_from_meta_data($meta, $ID = null, $force_resmush = tr
 		return $meta;
 
 	// meta sizes don't contain a path, so we calculate one
-	$base_dir = dirname($file_path) . '/';
-
+	$base_dir = trailingslashit( dirname($file_path) );
 
 	foreach($meta['sizes'] as $size => $data) {
 	  if ( !$force_resmush && wp_smushit_should_resmush( @$meta['sizes'][$size]['wp_smushit'] ) === FALSE ) {
       continue;
 	  }
 
-		list($smushed_file, $results) = wp_smushit($base_dir . $data['file']);
-		$meta['sizes'][$size]['file'] = str_replace($base_dir, '', $smushed_file);
+		list($smushed_file, $results) = wp_smushit( $base_dir . wp_basename( $data['file'] ) );
 		$meta['sizes'][$size]['wp_smushit'] = $results;
 	}
-
 	return $meta;
 }
 
