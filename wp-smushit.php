@@ -28,7 +28,7 @@ define('SMUSHIT_REQ_URL', 'http://www.smushit.com/ysmush.it/ws.php?img=%s');
 define('SMUSHIT_BASE_URL', 'http://www.smushit.com/');
 
 define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
-define('WP_SMUSHIT_UA', 'WP Smush.it/1.4.2 (+http://dialect.ca/code/wp-smushit)');
+define('WP_SMUSHIT_UA', 'WP Smush.it/1.4.3 (+http://dialect.ca/code/wp-smushit)');
 define('WP_SMUSHIT_PLUGIN_DIR', dirname(plugin_basename(__FILE__)));
 
 

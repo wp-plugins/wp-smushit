@@ -7,7 +7,7 @@ Contributors: alexdunae
 Tags: images, image, attachments, attachment
 Requires at least: 2.9
 Tested up to: 3.2.1
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 
@@ -48,6 +48,9 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 1. Done!
 
 == Changelog ==
+
+= 1.4.3 =
+* cleaner handling of file paths
 
 = 1.4.2 =
 * bulk smush.it will no longer re-smush images that were successful
