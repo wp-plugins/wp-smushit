@@ -6,7 +6,7 @@
   if ( sizeof($attachments) < 1 ):
     echo '<p>You don’t appear to have uploaded any images yet.</p>';
   else: 
-    if ( empty($_POST) ): // instructions page
+    if ( empty($_POST) && !$auto_start ): // instructions page
 ?>
   <p>This tool will run all of the images in your media library through the WP Smush.it web service.  It won't re-smush images that were successfully smushed before. It will retry images that were not successfully smushed.</p>
   
@@ -19,20 +19,20 @@
   <p><strong>This is an experimental feature.</strong> Please post any feedback to the <a href="http://wordpress.org/tags/wp-smushit">WordPress WP Smush.it forums</a>.</p>
 
   <form method="post" action="">
-    <?php wp_nonce_field( 'wp-smushit-bulk', '_wp-smushit-bulk-nonce'); ?>
+    <?php wp_nonce_field( 'wp-smushit-bulk', '_wpnonce'); ?>
     <button type="submit" class="button-secondary action">Run all my images through WP Smush.it right now</button>
   </form>
   
 <?php
       else: // run the script
   
-      if (!wp_verify_nonce( $_POST['_wp-smushit-bulk-nonce'], 'wp-smushit-bulk' ) || !current_user_can( 'edit_others_posts' ) ) {
+      if (!wp_verify_nonce( $_REQUEST['_wpnonce'], 'wp-smushit-bulk' ) || !current_user_can( 'edit_others_posts' ) ) {
   				wp_die( __( 'Cheatin&#8217; uh?' ) );
       }
 
+
       ob_implicit_flush(true);
       ob_end_flush();
-
       foreach( $attachments as $attachment ) {
         printf( "<p>Processing <strong>%s</strong>&hellip;<br>", esc_html($attachment->post_name) );
         $original_meta = wp_get_attachment_metadata( $attachment->ID, true );
@@ -41,8 +41,8 @@
 
         printf( "– %dx%d: ", intval($meta['width']), intval($meta['height']) );
         
-        if ( $original_meta['wp_smushit'] == $meta['wp_smushit'] ) {
-          echo 'already smushed';
+        if ( $original_meta['wp_smushit'] == $meta['wp_smushit'] && stripos( $meta['wp_smushit'], 'Smush.it error' ) === false ) {
+          echo 'already smushed' . $meta['wp_smushit'];
         } else {
           echo $meta['wp_smushit'];
         }
@@ -53,8 +53,7 @@
         if ( isset( $meta['sizes'] ) && is_array( $meta['sizes'] ) ) {
           foreach( $meta['sizes'] as $size_name => $size  ) {
             printf( "– %dx%d: ", intval($size['width']), intval($size['height']) );
-            
-            if ( $original_meta['sizes'][$size_name]['wp_smushit'] == $size['wp_smushit'] ) {
+            if ( $original_meta['sizes'][$size_name]['wp_smushit'] == $size['wp_smushit'] && stripos( $meta['sizes'][$size_name]['wp_smushit'], 'Smush.it error' ) === false ) {
               echo 'already smushed';
             } else {
               echo $size['wp_smushit'];

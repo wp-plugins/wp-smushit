@@ -1,6 +1,6 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.4.3
+Version: 1.5.0
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae
@@ -8,6 +8,7 @@ Tags: images, image, attachments, attachment
 Requires at least: 2.9
 Tested up to: 3.2.1
 Stable tag: 1.4.3
+Donate link: http://dunae.ca/donate.html
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 
@@ -30,8 +31,15 @@ You can also run your existing images through Smush.it via the WordPress `Media 
 
 As of version 1.4.0 there is a new, experimental `Bulk Smush.it` feature.  You can find the link under the `Media Library` tab.
 
+= NextGEN Gallery =
+NextGEN user?  Also download the <a href="http://wordpress.org/extend/plugins/wp-smushit-nextgen-gallery-integration/">WP Smush.it NextGEN Integration</a> plugin.
+
 = Privacy = 
 Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on their <a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html">FAQ</a>).
+
+= Donate? =
+
+If you're so inclined, I've setup <a href="http://dunae.ca/donate.html">a donation page</a>.
 
 = Updates, etc... =
 
@@ -48,6 +56,12 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 1. Done!
 
 == Changelog ==
+
+= 1.5.0 =
+* added basic integration for the <a href="http://wordpress.org/extend/plugins/wp-smushit-nextgen-gallery-integration/">NextGEN gallery plugin</a>
+* add support for media bulk action dropdown
+* compatibility with WordPress earlier than 3.1
+* added a <a href="http://dunae.ca/donate.html">donate link</a>
 
 = 1.4.3 =
 * cleaner handling of file paths
