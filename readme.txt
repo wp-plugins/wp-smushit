@@ -31,7 +31,7 @@ You can also run your existing images through Smush.it via the WordPress `Media 
 
 As of version 1.4.0 there is a new, experimental `Bulk Smush.it` feature.  You can find the link under the `Media Library` tab.
 
-= Errors
+= Errors =
 
 Sometimes the Smush.it service goes down or is under heavy load. If the plugin has difficulty connecting to Smush.it then automatically smushing is temporarily disabled (currently for 6 hours). You can always re-enable it via the `Media > Settings` screen or manually smush the image from the Media Library.
 
