@@ -1,13 +1,13 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.5.0
+Version: 1.6.0
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae
 Tags: images, image, attachments, attachment
 Requires at least: 2.9
-Tested up to: 3.2.1
-Stable tag: 1.5.0
+Tested up to: 3.3.2
+Stable tag: 1.6.0
 Donate link: http://dunae.ca/donate.html
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
@@ -30,6 +30,10 @@ Every image you add to a page or post will be automatically run through Smush.it
 You can also run your existing images through Smush.it via the WordPress `Media Library`.  Click on the `Smush.it now!` link for any image you'd like to smush.
 
 As of version 1.4.0 there is a new, experimental `Bulk Smush.it` feature.  You can find the link under the `Media Library` tab.
+
+= Errors
+
+Sometimes the Smush.it service goes down or is under heavy load. If the plugin has difficulty connecting to Smush.it then automatically smushing is temporarily disabled (currently for 6 hours). You can always re-enable it via the `Media > Settings` screen or manually smush the image from the Media Library.
 
 = NextGEN Gallery =
 NextGEN user?  Also download the <a href="http://wordpress.org/extend/plugins/wp-smushit-nextgen-gallery-integration/">WP Smush.it NextGEN Integration</a> plugin.
@@ -60,6 +64,7 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 
 = 1.6.0 =
 * added setting to disable automatic smushing on upload (default is true)
+* on HTTP error, smushing will be temporarily disabled for 6 hours
 
 = 1.5.0 =
 * added basic integration for the <a href="http://wordpress.org/extend/plugins/wp-smushit-nextgen-gallery-integration/">NextGEN gallery plugin</a>
