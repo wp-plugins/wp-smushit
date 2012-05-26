@@ -239,6 +239,10 @@ function wp_smushit_should_resmush($previous_status) {
  * Called after `wp_generate_attachment_metadata` is completed.
  */
 function wp_smushit_resize_from_meta_data($meta, $ID = null, $force_resmush = true) {
+  if ( $ID && wp_attachment_is_image( $ID ) === false ) {
+    return $meta;
+  }
+
 	$file_path = $meta['file'];
 	$store_absolute_path = true;
 	$upload_dir = wp_upload_dir();
@@ -343,10 +347,12 @@ function wp_smushit_custom_column($column_name, $id) {
 			         $id,
 			         __('Re-smush', WP_SMUSHIT_DOMAIN));
     	} else {
-    		print __('Not processed', WP_SMUSHIT_DOMAIN);
-    		printf("<br><a href=\"admin.php?action=wp_smushit_manual&amp;attachment_ID=%d\">%s</a>",
-			         $id,
-			         __('Smush.it now!', WP_SMUSHIT_DOMAIN));
+    	  if ( wp_attachment_is_image( $id ) ) {
+      		print __('Not processed', WP_SMUSHIT_DOMAIN);
+      		printf("<br><a href=\"admin.php?action=wp_smushit_manual&amp;attachment_ID=%d\">%s</a>",
+  			         $id,
+  			         __('Smush.it now!', WP_SMUSHIT_DOMAIN));
+        }
     	}
     }
 }
