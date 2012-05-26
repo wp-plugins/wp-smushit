@@ -4,7 +4,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.5.0
+Version: 1.6.0
 Author URI: http://dialect.ca/
 */
 
@@ -16,8 +16,6 @@ if ( !function_exists('download_url') ) {
 	require_once(ABSPATH . 'wp-admin/includes/file.php');
 }
 
-
-
 /**
  * Constants
  */
@@ -28,14 +26,14 @@ define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
 define('WP_SMUSHIT_UA', 'WP Smush.it/1.6.0 (+http://dialect.ca/code/wp-smushit)');
 define('WP_SMUSHIT_PLUGIN_DIR', dirname(plugin_basename(__FILE__)));
 
-define('WP_SMUSHIT_AUTO', intval(get_option('wp_smushit_auto', 1)));
+define('WP_SMUSHIT_AUTO', intval(get_option('wp_smushit_smushit_auto', 0)));
 require( dirname(__FILE__) . '/settings.php' );
 
 /**
  * Hooks
  */
 
-if (WP_SMUSHIT_AUTO !== 0) {
+if (WP_SMUSHIT_AUTO == WP_SMUSHIT_AUTO_OK) {
   add_filter('wp_generate_attachment_metadata', 'wp_smushit_resize_from_meta_data', 10, 2);
 }
 add_filter('manage_media_columns', 'wp_smushit_columns');
@@ -55,8 +53,6 @@ function wp_smushit_admin_menu() {
   add_media_page( 'Bulk Smush.it', 'Bulk Smush.it', 'edit_others_posts', 'wp-smushit-bulk', 'wp_smushit_bulk_preview');
 }
 add_action( 'admin_menu', 'wp_smushit_admin_menu' );
-
-
 
 
 function wp_smushit_bulk_preview() {
@@ -298,7 +294,9 @@ function wp_smushit_post($file_url) {
 		$response = wp_remote_get($req, array('user-agent' => WP_SMUSHIT_UA, 'timeout' => 20));
 
 		if( is_wp_error( $response ) ) {
-			wp_die( $response );
+		  wp_smushit_temporarily_disable();
+		  $msg = 'Automatic smushing has been disabled temporarily due to an error. ' . $response->get_error_message();
+			wp_die( $msg );
 		}
 
 		$data = wp_remote_retrieve_body($response);
