@@ -295,15 +295,13 @@ function wp_smushit_post($file_url) {
 	$data = false;
 	
 	if ( function_exists('wp_remote_get') ) {
-		add_filter('http_request_timeout', 'wp_smushit_http_request_timeout');
-		$response = wp_remote_get($req, array('user-agent' => WP_SMUSHIT_UA));
+		$response = wp_remote_get($req, array('user-agent' => WP_SMUSHIT_UA, 'timeout' => 20));
 
 		if( is_wp_error( $response ) ) {
 			wp_die( $response );
 		}
 
 		$data = wp_remote_retrieve_body($response);
-		remove_filter('http_request_timeout', 'wp_smushit_http_request_timeout');
 	} else {
 		wp_die( __('WP Smush.it requires WordPress 2.8 or greater', WP_SMUSHIT_DOMAIN) );
 	}
@@ -384,14 +382,6 @@ function wp_smushit_bulk_action_handler() {
 	wp_redirect( add_query_arg( '_wpnonce', wp_create_nonce( 'wp-smushit-bulk' ), admin_url( 'upload.php?page=wp-smushit-bulk&goback=1&ids=' . $ids ) ) );
 	exit();
 }
-
-/**
- * http_request_timeout filter -- bumped up to 25 seconds for larger images
- */
-function wp_smushit_http_request_timeout($time) {
-	return 25;
-}
-
 
 if ( function_exists( 'wp_basename' ) === false ) {
   /**
