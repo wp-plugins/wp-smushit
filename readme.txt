@@ -53,9 +53,13 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 
 1. Upload the `wp-smushit` plugin to your `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
+1. Automatic smushing of uploaded images can be controlled on the `Settings > Media` screen
 1. Done!
 
 == Changelog ==
+
+= 1.6.0 =
+* added setting to disable automatic smushing on upload (default is true)
 
 = 1.5.0 =
 * added basic integration for the <a href="http://wordpress.org/extend/plugins/wp-smushit-nextgen-gallery-integration/">NextGEN gallery plugin</a>

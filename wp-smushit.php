@@ -16,6 +16,8 @@ if ( !function_exists('download_url') ) {
 	require_once(ABSPATH . 'wp-admin/includes/file.php');
 }
 
+
+
 /**
  * Constants
  */
@@ -23,14 +25,19 @@ define('SMUSHIT_REQ_URL', 'http://www.smushit.com/ysmush.it/ws.php?img=%s');
 define('SMUSHIT_BASE_URL', 'http://www.smushit.com/');
 
 define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
-define('WP_SMUSHIT_UA', 'WP Smush.it/1.5.0 (+http://dialect.ca/code/wp-smushit)');
+define('WP_SMUSHIT_UA', 'WP Smush.it/1.6.0 (+http://dialect.ca/code/wp-smushit)');
 define('WP_SMUSHIT_PLUGIN_DIR', dirname(plugin_basename(__FILE__)));
 
+define('WP_SMUSHIT_AUTO', intval(get_option('wp_smushit_auto', 1)));
+require( dirname(__FILE__) . '/settings.php' );
 
 /**
  * Hooks
  */
-add_filter('wp_generate_attachment_metadata', 'wp_smushit_resize_from_meta_data', 10, 2);
+
+if (WP_SMUSHIT_AUTO !== 0) {
+  add_filter('wp_generate_attachment_metadata', 'wp_smushit_resize_from_meta_data', 10, 2);
+}
 add_filter('manage_media_columns', 'wp_smushit_columns');
 add_action('manage_media_custom_column', 'wp_smushit_custom_column', 10, 2);
 add_action('admin_init', 'wp_smushit_admin_init');
@@ -48,6 +55,9 @@ function wp_smushit_admin_menu() {
   add_media_page( 'Bulk Smush.it', 'Bulk Smush.it', 'edit_others_posts', 'wp-smushit-bulk', 'wp_smushit_bulk_preview');
 }
 add_action( 'admin_menu', 'wp_smushit_admin_menu' );
+
+
+
 
 function wp_smushit_bulk_preview() {
   if ( function_exists( 'apache_setenv' ) ) {
@@ -243,9 +253,6 @@ function wp_smushit_resize_from_meta_data($meta, $ID = null, $force_resmush = tr
 		$store_absolute_path = false;
 		$file_path =  $upload_path . $file_path;
 	}
-	
-
-	
 
   if ( $force_resmush || wp_smushit_should_resmush(  @$meta['wp_smushit'] ) ) {
 	  list($file, $msg) = wp_smushit($file_path);
