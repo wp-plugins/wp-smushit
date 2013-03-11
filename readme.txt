@@ -1,18 +1,32 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.6.0
+Version: 1.6.1
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae
 Tags: images, image, attachments, attachment
 Requires at least: 2.9
 Tested up to: 3.3.2
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 Donate link: http://dunae.ca/donate.html
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 
 == Description ==
+
+= WP SMUSH.IT IS NO LONGER MAINTAINED =
+
+Unfortunately this plugin is no longer maintained, at least not by me.  Growing family and work as well as shifting focus just don't leave me the time.
+
+(The plugin still works, though there is the occassional glitch.)
+
+If anyone out there is interested in taking the plugin over, feel free to get in touch at <a href="mailto:code@dialect.ca">code@dialect.ca</a>.  The most obivious way forward is to add support for <tt>pngcrush</tt>, <tt>optipng</tt>, etc... on servers that support, and even look at what can be done within GD.
+
+Somewhat related, to this day it's not clear what Yahoo intends to do with their Smush.it system.  Users of the plugin have always gotten unofficial permission to use the service, but there's no way of knowing how long that will last (though it has been years).
+
+I'd love to do be able to do more with WP Smush.it, but life conspires against it.  It's been fun smushing the hell out of those extra bytes with you all.
+
+= Original Description
 
 Yahoo's excellent <a href="http://developer.yahoo.com/performance/">Exceptional Performance series</a> recommends <a href="http://developer.yahoo.com/performance/rules.html#opt_images">optimizing images</a> in several lossless ways:
 
@@ -38,7 +52,7 @@ Sometimes the Smush.it service goes down or is under heavy load. If the plugin h
 = NextGEN Gallery =
 NextGEN user?  Also download the <a href="http://wordpress.org/extend/plugins/wp-smushit-nextgen-gallery-integration/">WP Smush.it NextGEN Integration</a> plugin.
 
-= Privacy = 
+= Privacy =
 Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on their <a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html">FAQ</a>).
 
 = Donate? =
@@ -60,7 +74,16 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 1. Automatic smushing of uploaded images can be controlled on the `Settings > Media` screen
 1. Done!
 
+== Upgrade Notice ==
+
+= 1.6.1 =
+
+Unfortunately this plugin is no longer maintained, at least not by me.  See <a href="http://wordpress.org/extend/plugins/wp-smushit/">the plugin page</a> for all the details.  Thanks for all the smushing fun!
+
 == Changelog ==
+
+= 1.6.1 =
+* no longer maintained notice
 
 = 1.6.0 =
 * added setting to disable automatic smushing on upload (default is true)
@@ -98,10 +121,10 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 * handle images stored on other domains -- props to [ka-ri-ne](http://wordpress.org/support/profile/ka-ri-ne) for the fix
 * avoid time-out errors when working with larger files -- props to [Milan Dinić](http://wordpress.org/support/profile/dimadin) for the fix
 
-= 1.2.10 = 
+= 1.2.10 =
 * removed testing link
 
-= 1.2.9 = 
+= 1.2.9 =
 * updated Smush.it endpoint URL
 
 = 1.2.8 =
