@@ -26,7 +26,7 @@ Somewhat related, to this day it's not clear what Yahoo intends to do with their
 
 I'd love to do be able to do more with WP Smush.it, but life conspires against it.  It's been fun smushing the hell out of those extra bytes with you all.
 
-= Original Description
+= Original Description =
 
 Yahoo's excellent <a href="http://developer.yahoo.com/performance/">Exceptional Performance series</a> recommends <a href="http://developer.yahoo.com/performance/rules.html#opt_images">optimizing images</a> in several lossless ways:
 
@@ -54,14 +54,6 @@ NextGEN user?  Also download the <a href="http://wordpress.org/extend/plugins/wp
 
 = Privacy =
 Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on their <a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html">FAQ</a>).
-
-= Donate? =
-
-If you're so inclined, I've setup <a href="http://dunae.ca/donate.html">a donation page</a>.
-
-= Updates, etc... =
-
-Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www.twitter.com/TheCHANGELOG).
 
 == Screenshots ==
 
