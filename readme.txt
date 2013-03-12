@@ -26,7 +26,7 @@ Somewhat related, to this day it's not clear what Yahoo intends to do with their
 
 I'd love to do be able to do more with WP Smush.it, but life conspires against it.  It's been fun smushing the hell out of those extra bytes with you all.
 
-= Original Description
+= Original Description =
 
 Yahoo's excellent <a href="http://developer.yahoo.com/performance/">Exceptional Performance series</a> recommends <a href="http://developer.yahoo.com/performance/rules.html#opt_images">optimizing images</a> in several lossless ways:
 
