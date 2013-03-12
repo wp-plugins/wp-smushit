@@ -55,14 +55,6 @@ NextGEN user?  Also download the <a href="http://wordpress.org/extend/plugins/wp
 = Privacy =
 Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on their <a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html">FAQ</a>).
 
-= Donate? =
-
-If you're so inclined, I've setup <a href="http://dunae.ca/donate.html">a donation page</a>.
-
-= Updates, etc... =
-
-Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www.twitter.com/TheCHANGELOG).
-
 == Screenshots ==
 
 1. See the savings from Smush.it in the Media Library.
