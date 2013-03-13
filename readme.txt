@@ -3,7 +3,7 @@ Plugin Name: WP Smush.it
 Version: 1.6.2
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
-Contributors: alexdunae, wpmudev
+Contributors: alexdunae, WPMUDEV
 Tags: images, image, attachments, attachment
 Requires at least: 2.9
 Tested up to: 3.3.2
