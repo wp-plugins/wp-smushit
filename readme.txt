@@ -1,32 +1,19 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.6.1
+Version: 1.6.2
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
-Contributors: alexdunae
+Contributors: alexdunae, wpmudev
 Tags: images, image, attachments, attachment
 Requires at least: 2.9
 Tested up to: 3.3.2
-Stable tag: 1.6.1
-Donate link: http://dunae.ca/donate.html
+Stable tag: 1.6.2
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 
 == Description ==
 
-= WP SMUSH.IT IS NO LONGER MAINTAINED =
-
-Unfortunately this plugin is no longer maintained, at least not by me.  Growing family and work as well as shifting focus just don't leave me the time.
-
-(The plugin still works, though there is the occassional glitch.)
-
-If anyone out there is interested in taking the plugin over, feel free to get in touch at <a href="mailto:code@dialect.ca">code@dialect.ca</a>.  The most obivious way forward is to add support for <tt>pngcrush</tt>, <tt>optipng</tt>, etc... on servers that support, and even look at what can be done within GD.
-
-Somewhat related, to this day it's not clear what Yahoo intends to do with their Smush.it system.  Users of the plugin have always gotten unofficial permission to use the service, but there's no way of knowing how long that will last (though it has been years).
-
-I'd love to do be able to do more with WP Smush.it, but life conspires against it.  It's been fun smushing the hell out of those extra bytes with you all.
-
-= Original Description =
+= Dear Smushers: WP Smush.it has found a new maintainer. Stay tuned for a fresh release. =
 
 Yahoo's excellent <a href="http://developer.yahoo.com/performance/">Exceptional Performance series</a> recommends <a href="http://developer.yahoo.com/performance/rules.html#opt_images">optimizing images</a> in several lossless ways:
 
@@ -68,11 +55,14 @@ Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on 
 
 == Upgrade Notice ==
 
-= 1.6.1 =
+= 1.6.2 =
 
-Unfortunately this plugin is no longer maintained, at least not by me.  See <a href="http://wordpress.org/extend/plugins/wp-smushit/">the plugin page</a> for all the details.  Thanks for all the smushing fun!
+Dear Smushers: WP Smush.it has found a new maintainer. Stay tuned for a fresh release.
 
 == Changelog ==
+
+= 1.6.2 =
+* about to get a new lease on life notice
 
 = 1.6.1 =
 * no longer maintained notice
