@@ -25,6 +25,7 @@ define('SMUSHIT_BASE_URL', 'http://www.smushit.com/');
 define('WP_SMUSHIT_DOMAIN', 'wp_smushit');
 define('WP_SMUSHIT_UA', 'WP Smush.it/1.6.0 (+http://dialect.ca/code/wp-smushit)');
 define('WP_SMUSHIT_PLUGIN_DIR', dirname(plugin_basename(__FILE__)));
+define('WP_SMUSHIT_MAX_BYTES', 1048576);
 
 define('WP_SMUSHIT_AUTO', intval(get_option('wp_smushit_smushit_auto', 0)));
 require( dirname(__FILE__) . '/settings.php' );
@@ -142,6 +143,12 @@ function wp_smushit($file, $file_url = null) {
 		$msg = sprintf(__("<span class='code'>%s</span> is not writable", WP_SMUSHIT_DOMAIN), $file_path);
 		return array($file, $msg);
 	}
+
+  $file_size = filesize($file_path);
+  if ( $file_size > WP_SMUSHIT_MAX_BYTES ) {
+    $msg = sprintf(__("<a href='http://developer.yahoo.com/yslow/smushit/faq.html#faq_restrict'>Too big</a> for Smush.it (%s)", WP_SMUSHIT_DOMAIN), wp_smushit_format_bytes($file_size));
+    return array($file, $msg);
+  }
 
 	// check that the file is within the WP_CONTENT_DIR
 	$upload_dir = wp_upload_dir();
