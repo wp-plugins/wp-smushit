@@ -62,6 +62,7 @@ Dear Smushers: WP Smush.it has found a new maintainer. Stay tuned for a fresh re
 == Changelog ==
 
 = 1.6.3 =
+* check image size before uploading (1 MB limit)
 * attempt to smush more than one image before bailing (kind thanks to <a href="http://wordpress.org/support/profile/xrampage16">xrampage16</a>)
 
 = 1.6.2 =
