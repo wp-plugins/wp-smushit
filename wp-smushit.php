@@ -27,6 +27,11 @@ define('WP_SMUSHIT_UA', 'WP Smush.it/1.6.0 (+http://dialect.ca/code/wp-smushit)'
 define('WP_SMUSHIT_PLUGIN_DIR', dirname(plugin_basename(__FILE__)));
 define('WP_SMUSHIT_MAX_BYTES', 1048576);
 
+// The number of images (including generated sizes) that can return errors before abandoning all hope.
+// N.B. this doesn't work with the bulk uploader, since it creates a new HTTP request
+// for each image.  It does work with the bulk smusher, though.
+define('WP_SMUSHIT_ERRORS_BEFORE_QUITTING', 3 * count(get_intermediate_image_sizes()));
+
 define('WP_SMUSHIT_AUTO', intval(get_option('wp_smushit_smushit_auto', 0)));
 define('WP_SMUSHIT_TIMEOUT', intval(get_option('wp_smushit_smushit_timeout', 60)));
 require( dirname(__FILE__) . '/settings.php' );
@@ -132,6 +137,13 @@ function wp_smushit($file, $file_url = null) {
 	// all directories in the hierarchy, otherwise realpath() will return FALSE."
 	// $file_path = realpath($file);
 
+  static $error_count = 0;
+
+  if ( $error_count >= WP_SMUSHIT_ERRORS_BEFORE_QUITTING ) {
+    $msg = __("Did not smush due to previous errors", WP_SMUSHIT_DOMAIN);
+    return array($file, $msg);
+  }
+
 	$file_path = $file;
 	// check that the file exists
 	if ( FALSE === file_exists($file_path) || FALSE === is_file($file_path) ) {
@@ -168,8 +180,10 @@ function wp_smushit($file, $file_url = null) {
 
 	$data = wp_smushit_post($file_url);
 
-	if ( FALSE === $data )
+	if ( FALSE === $data ) {
+    $error_count++;
 		return array($file, __('Error posting to Smush.it', WP_SMUSHIT_DOMAIN));
+  }
 
 	// make sure the response looks like JSON -- added 2008-12-19 when
 	// Smush.it was returning PHP warnings before the JSON output
@@ -303,24 +317,8 @@ function wp_smushit_post($file_url) {
 	$data = false;
 
 	if ( function_exists('wp_remote_get') ) {
-    $count = 0;
-    $finished = FALSE;
-    do {
-      $response = wp_remote_get($req, array('user-agent' => WP_SMUSHIT_UA, 'timeout' => WP_SMUSHIT_TIMEOUT));
-      if ( is_wp_error( $response ) ) {
-        $count++;
-      } else {
-        $finished = TRUE;
-      }
-      if ($count == 3) {
-        //$msg = 'Automatic smushing has been disabled temporarily due to an error. ' . $response->get_error_message() .' - url | '. $file_url;
-        //wp_die( $msg );
-        $response = FALSE;
-        $finished = TRUE;
-      }
-    } while (!$finished);
-
-    if ( !$response ) {
+    $response = wp_remote_get($req, array('user-agent' => WP_SMUSHIT_UA, 'timeout' => WP_SMUSHIT_TIMEOUT));
+    if ( !$response || is_wp_error($response)) {
       $data = FALSE;
     } else {
       $data = wp_remote_retrieve_body($response);
@@ -328,6 +326,8 @@ function wp_smushit_post($file_url) {
 	} else {
 		wp_die( __('WP Smush.it requires WordPress 2.8 or greater', WP_SMUSHIT_DOMAIN) );
 	}
+
+  $data = FALSE;
 
 	return $data;
 }
