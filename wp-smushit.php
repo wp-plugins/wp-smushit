@@ -28,6 +28,7 @@ define('WP_SMUSHIT_PLUGIN_DIR', dirname(plugin_basename(__FILE__)));
 define('WP_SMUSHIT_MAX_BYTES', 1048576);
 
 define('WP_SMUSHIT_AUTO', intval(get_option('wp_smushit_smushit_auto', 0)));
+define('WP_SMUSHIT_TIMEOUT', intval(get_option('wp_smushit_smushit_timeout', 60)));
 require( dirname(__FILE__) . '/settings.php' );
 
 /**
@@ -305,7 +306,7 @@ function wp_smushit_post($file_url) {
     $count = 0;
     $finished = FALSE;
     do {
-      $response = wp_remote_get($req, array('user-agent' => WP_SMUSHIT_UA, 'timeout' => 20));
+      $response = wp_remote_get($req, array('user-agent' => WP_SMUSHIT_UA, 'timeout' => WP_SMUSHIT_TIMEOUT));
       if ( is_wp_error( $response ) ) {
         $count++;
       } else {

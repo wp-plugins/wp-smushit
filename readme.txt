@@ -36,6 +36,8 @@ As of version 1.4.0 there is a new, experimental `Bulk Smush.it` feature.  You c
 
 Sometimes the Smush.it service goes down or is under heavy load. If the plugin has difficulty connecting to Smush.it then automatically smushing is temporarily disabled (currently for 6 hours). You can always re-enable it via the `Media > Settings` screen or manually smush the image from the Media Library.
 
+You can also define how long you want to wait for the Smush.it server to respond.
+
 = NextGEN Gallery =
 NextGEN user?  Also download the <a href="http://wordpress.org/extend/plugins/wp-smushit-nextgen-gallery-integration/">WP Smush.it NextGEN Integration</a> plugin.
 
@@ -64,6 +66,7 @@ Dear Smushers: WP Smush.it has found a new maintainer. Stay tuned for a fresh re
 = 1.6.3 =
 * check image size before uploading (1 MB limit)
 * attempt to smush more than one image before bailing (kind thanks to <a href="http://wordpress.org/support/profile/xrampage16">xrampage16</a>)
+* allow setting timeout value under `Media > Settings` (default is 60 seconds)
 
 = 1.6.2 =
 * about to get a new lease on life notice
