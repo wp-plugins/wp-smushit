@@ -62,10 +62,10 @@ function wp_smushit_bulk_preview() {
   @ini_set('output_buffering','on');
   @ini_set('zlib.output_compression', 0);
   @ini_set('implicit_flush', 1);
-  
+
   $attachments = null;
   $auto_start = false;
-  
+
   if ( isset($_REQUEST['ids'])) {
     $attachments = get_posts( array(
       'numberposts' => -1,
@@ -81,7 +81,7 @@ function wp_smushit_bulk_preview() {
       'post_mime_type' => 'image'
     ));
   }
-  
+
 
   require( dirname(__FILE__) . '/bulk.php' );
 }
@@ -126,10 +126,10 @@ function wp_smushit($file, $file_url = null) {
 	//	return array($file, __('Not processed (local file)', WP_SMUSHIT_DOMAIN));
 
 	// canonicalize path - disabled 2011-02-1 troubleshooting 'Could not find...' errors.
-	// From the PHP docs: "The running script must have executable permissions on 
+	// From the PHP docs: "The running script must have executable permissions on
 	// all directories in the hierarchy, otherwise realpath() will return FALSE."
 	// $file_path = realpath($file);
-	
+
 	$file_path = $file;
 	// check that the file exists
 	if ( FALSE === file_exists($file_path) || FALSE === is_file($file_path) ) {
@@ -220,7 +220,7 @@ function wp_smushit_should_resmush($previous_status) {
   if ( !$previous_status || empty($previous_status) ) {
     return TRUE;
   }
-  
+
   if ( stripos($previous_status, 'no savings') !== FALSE || stripos($previous_status, 'reduced') !== FALSE ) {
     return FALSE;
   }
@@ -293,21 +293,34 @@ function wp_smushit_post($file_url) {
 	$req = sprintf( SMUSHIT_REQ_URL, urlencode( $file_url ) );
 
 	$data = false;
-	
+
 	if ( function_exists('wp_remote_get') ) {
-		$response = wp_remote_get($req, array('user-agent' => WP_SMUSHIT_UA, 'timeout' => 20));
+    $count = 0;
+    $finished = FALSE;
+    do {
+      $response = wp_remote_get($req, array('user-agent' => WP_SMUSHIT_UA, 'timeout' => 20));
+      if ( is_wp_error( $response ) ) {
+        $count++;
+      } else {
+        $finished = TRUE;
+      }
+      if ($count == 3) {
+        //$msg = 'Automatic smushing has been disabled temporarily due to an error. ' . $response->get_error_message() .' - url | '. $file_url;
+        //wp_die( $msg );
+        $response = FALSE;
+        $finished = TRUE;
+      }
+    } while (!$finished);
 
-		if( is_wp_error( $response ) ) {
-		  wp_smushit_temporarily_disable();
-		  $msg = 'Automatic smushing has been disabled temporarily due to an error. ' . $response->get_error_message();
-			wp_die( $msg );
-		}
-
-		$data = wp_remote_retrieve_body($response);
+    if ( !$response ) {
+      $data = FALSE;
+    } else {
+      $data = wp_remote_retrieve_body($response);
+    }
 	} else {
 		wp_die( __('WP Smush.it requires WordPress 2.8 or greater', WP_SMUSHIT_DOMAIN) );
 	}
-	
+
 	return $data;
 }
 
