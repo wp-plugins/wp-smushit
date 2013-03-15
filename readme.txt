@@ -1,13 +1,13 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.6.2
+Version: 1.6.3
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae, WPMUDEV
 Tags: images, image, attachments, attachment
 Requires at least: 2.9
-Tested up to: 3.3.2
-Stable tag: 1.6.2
+Tested up to: 3.5.1
+Stable tag: 1.6.3
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 
@@ -57,9 +57,17 @@ Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on 
 
 == Upgrade Notice ==
 
-= 1.6.2 =
-
 Dear Smushers: WP Smush.it has found a new maintainer. Stay tuned for a fresh release.
+
+In this release, my last official one, we've got:
+
+* check image size before uploading (1 MB limit)
+* attempt to smush more than one image before bailing (kind thanks to <a href="http://wordpress.org/support/profile/xrampage16">xrampage16</a>)
+* allow setting timeout value under `Media > Settings` (default is 60 seconds)
+
+Cheers from Vancouver Island, and thanks for all the smushing.
+
+- Alex
 
 == Changelog ==
 
