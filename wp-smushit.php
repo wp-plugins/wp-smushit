@@ -188,7 +188,7 @@ function wp_smushit($file, $file_url = null) {
 	if ( -1 === intval($data->dest_size) )
 		return array($file, __('No savings', WP_SMUSHIT_DOMAIN));
 
-	if ( !$data->dest ) {
+	if ( !isset($data->dest) ) {
 		$err = ($data->error ? 'Smush.it error: ' . $data->error : 'unknown error');
 		$err .= " while processing <span class='code'>$file_url</span> (<span class='code'>$file_path</span>)";
 		return array($file, __($err, WP_SMUSHIT_DOMAIN) );
