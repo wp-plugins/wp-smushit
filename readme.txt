@@ -35,10 +35,12 @@ As of version 1.4.0 there is a new, experimental `Bulk Smush.it` feature.  You c
 
 Sometimes the Smush.it service goes down or is under heavy load. If the plugin has difficulty connecting to Smush.it then automatically smushing is temporarily disabled (currently for 6 hours). You can always re-enable it via the `Media > Settings` screen or manually smush the image from the Media Library.
 
+You can also define how long you want to wait for the Smush.it server to respond.
+
 = NextGEN Gallery =
 NextGEN user?  Also download the <a href="http://wordpress.org/extend/plugins/wp-smushit-nextgen-gallery-integration/">WP Smush.it NextGEN Integration</a> plugin.
 
-= Privacy = 
+= Privacy =
 Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on their <a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html">FAQ</a>).
 
 = Donate? =
@@ -98,10 +100,10 @@ Plugin updates are announced on [http://www.twitter.com/TheCHANGELOG](http://www
 * handle images stored on other domains -- props to [ka-ri-ne](http://wordpress.org/support/profile/ka-ri-ne) for the fix
 * avoid time-out errors when working with larger files -- props to [Milan Dinić](http://wordpress.org/support/profile/dimadin) for the fix
 
-= 1.2.10 = 
+= 1.2.10 =
 * removed testing link
 
-= 1.2.9 = 
+= 1.2.9 =
 * updated Smush.it endpoint URL
 
 = 1.2.8 =
