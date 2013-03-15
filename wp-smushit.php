@@ -249,7 +249,7 @@ function wp_smushit_resize_from_meta_data($meta, $ID = null, $force_resmush = tr
 	$upload_path = trailingslashit( $upload_dir['basedir'] );
 
 	// WordPress >= 2.6.2: determine the absolute $file_path (http://core.trac.wordpress.org/changeset/8796)
-	if ( FALSE === strpos($file,  $upload_path) ) {
+	if ( FALSE === strpos($file_path,  $upload_path) ) {
 		$store_absolute_path = false;
 		$file_path =  $upload_path . $file_path;
 	}
