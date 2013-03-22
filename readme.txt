@@ -1,13 +1,13 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.6.3
+Version: 1.6.4
 Author: Dialect
 Author URI: http://dialect.ca/?wp_smush_it
 Contributors: alexdunae, WPMUDEV
 Tags: images, image, attachments, attachment
 Requires at least: 2.9
 Tested up to: 3.5.1
-Stable tag: 1.6.3
+Stable tag: 1.6.4
 
 Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 
@@ -70,6 +70,9 @@ Cheers from Vancouver Island, and thanks for all the smushing.
 - Alex
 
 == Changelog ==
+
+= 1.6.4 =
+* Fix debug code left in 1.6.3
 
 = 1.6.3 =
 * check image size before uploading (1 MB limit)

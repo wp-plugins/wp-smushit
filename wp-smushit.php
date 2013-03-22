@@ -4,7 +4,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://dialect.ca/code/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: Dialect
-Version: 1.6.3
+Version: 1.6.4
 Author URI: http://dialect.ca/
 */
 
@@ -327,7 +327,7 @@ function wp_smushit_post($file_url) {
 		wp_die( __('WP Smush.it requires WordPress 2.8 or greater', WP_SMUSHIT_DOMAIN) );
 	}
 
-  $data = FALSE;
+  //$data = FALSE;
 
 	return $data;
 }
