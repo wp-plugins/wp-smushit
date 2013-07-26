@@ -175,7 +175,7 @@ class WpSmushit {
 		<?php 
 
 		if ( sizeof($attachments) < 1 ):
-			_e( '<p>You don’t appear to have uploaded any images yet.</p>', WP_SMUSHIT_DOMAIN );
+			_e( "<p>You don't appear to have uploaded any images yet.</p>", WP_SMUSHIT_DOMAIN );
 		else: 
 			if ( empty($_POST) && !$auto_start ): // instructions page
 		
