@@ -1,6 +1,6 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.6.5.1
+Version: 1.6.5.2
 Author: WPMU DEV
 Author URI: http://premium.wpmudev.org
 Contributors: WPMUDEV, alexdunae
@@ -71,6 +71,10 @@ This will give us a good foundation to start adding some new features!
 
 
 == Changelog ==
+
+= 1.6.5.2 =
+* Corrected issues with Windows paths compare.
+* Added debug output option to help with user support issues. 
 
 = 1.6.5.1 =
 * Correct Settings > Media issue causing settings to report warnings and not save. 
