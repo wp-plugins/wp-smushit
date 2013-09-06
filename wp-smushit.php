@@ -4,7 +4,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://wordpress.org/extend/plugins/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: WPMU DEV
-Version: 1.6.5.2
+Version: 1.6.5.3
 Author URI: http://premium.wpmudev.org/
 Textdomain: wp_smushit
 */
@@ -330,36 +330,42 @@ class WpSmushit {
 		static $error_count = 0;
 
 		if ( $error_count >= WP_SMUSHIT_ERRORS_BEFORE_QUITTING ) {
-			return __( "Did not smush due to previous errors", WP_SMUSHIT_DOMAIN );
+			return __( "Did not Smush.it due to previous errors", WP_SMUSHIT_DOMAIN );
 		}
 
 		// check that the file exists
 		if ( !file_exists( $file_path ) || !is_file( $file_path ) ) {
-			return sprintf( __( "Could not find <span class='code'>%s</span>", WP_SMUSHIT_DOMAIN ), $file_path );
+			return sprintf( __( "ERROR: Could not find <span class='code'>%s</span>", WP_SMUSHIT_DOMAIN ), $file_path );
 		}
 
 		// check that the file is writable
 		if ( !is_writable( dirname( $file_path)) ) {
-			return sprintf( __("<span class='code'>%s</span> is not writable", WP_SMUSHIT_DOMAIN ), dirname($file_path) );
+			return sprintf( __("ERROR: <span class='code'>%s</span> is not writable", WP_SMUSHIT_DOMAIN ), dirname($file_path) );
 		}
 
 		$file_size = filesize( $file_path );
 		if ( $file_size > WP_SMUSHIT_MAX_BYTES ) {
-			return sprintf(__('<span style="color:#FF0000;">Skipped (%s) Unable to Smush due to Yahoo 1mb size limits. See <a href="http://developer.yahoo.com/yslow/smushit/faq.html#faq_restrict">FAQ</a></span>', WP_SMUSHIT_DOMAIN), $this->format_bytes($file_size));
+			return sprintf(__('ERROR: <span style="color:#FF0000;">Skipped (%s) Unable to Smush due to Yahoo 1mb size limits. See <a href="http://developer.yahoo.com/yslow/smushit/faq.html#faq_restrict">FAQ</a></span>', WP_SMUSHIT_DOMAIN), $this->format_bytes($file_size));
 		}
 
+// local file check disabled 2013-09-05 - I don't see a point in checking this. We only use the URL of the file to Yahoo! and there is no gaurentee 
+// the file path is the SAME as the image from the URL. We can only really make sure the image URL starts with the home URL. This should prevent CDN URLs
+// from being processed. 
 		// check that the file is within the WP_CONTENT_DIR
 		// But first convert the slashes to be uniform. Really with WP would already do this!
-		$file_path_tmp 	= str_replace('\\', '/', realpath($file_path));
-		$ABSPATH_tmp 	= str_replace('\\', '/', ABSPATH);
-		if (WP_SMUSHIT_DEBUG) {		
-			echo "DEBUG: file_path [". $file_path_tmp ."] ABSPATH [". $ABSPATH_tmp ."]<br />";		
+/*
+		$file_path_tmp 	= str_replace('\\', '/', $file_path);
+		$WP_CONTENT_DIR_tmp 	= str_replace('\\', '/', WP_CONTENT_DIR);		
+		
+		if (WP_SMUSHIT_DEBUG) {
+			echo "DEBUG: file_path [". $file_path_tmp ."] WP_CONTENT_DIR [". $WP_CONTENT_DIR_tmp ."]<br />";		
 		}
-		if (stripos( $file_path_tmp, $ABSPATH_tmp) !== 0) {
-			return sprintf( __( "<span class='code'>%s</span> must be within the website directory (<span class='code'>%s</span>)", WP_SMUSHIT_DOMAIN ), 
-				htmlentities( $file_path_tmp ), $ABSPATH_tmp);
+		if (stripos( $file_path_tmp, $WP_CONTENT_DIR_tmp) !== 0) {
+				return sprintf( __( "ERROR: <span class='code'>%s</span> must be within the website content directory (<span class='code'>%s</span>)", WP_SMUSHIT_DOMAIN ), 
+					htmlentities( $file_path_tmp ), $WP_CONTENT_DIR_tmp);
+			}
 		}
-
+*/		
 		// The Yahoo! Smush.it service does not working with https images. 
 		$file_url = str_replace('https://', 'http://', $file_url);
 		$home_url = str_replace('https://', 'http://', get_option('home'));
@@ -368,7 +374,7 @@ class WpSmushit {
 		}
 
 		if (stripos($file_url, $home_url) !== 0) {
-			return sprintf( __( "<span class='code'>%s</span> must be within the website home URL (<span class='code'>%s</span>)", WP_SMUSHIT_DOMAIN ), 
+			return sprintf( __( "ERROR: <span class='code'>%s</span> must be within the website home URL (<span class='code'>%s</span>)", WP_SMUSHIT_DOMAIN ), 
 				htmlentities( $file_url ), $home_url);
 		}
 
@@ -379,7 +385,7 @@ class WpSmushit {
 		
 		if ( false === $data ) {
 			$error_count++;
-			return __( 'Error posting to Smush.it', WP_SMUSHIT_DOMAIN );
+			return __( 'ERROR: posting to Smush.it', WP_SMUSHIT_DOMAIN );
 		}
 
 		// make sure the response looks like JSON -- added 2008-12-19 when
