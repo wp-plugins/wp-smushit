@@ -1,12 +1,12 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.6.5.3
+Version: 1.6.5.4
 Author: WPMU DEV
 Author URI: http://premium.wpmudev.org
 Contributors: WPMUDEV, alexdunae
 Tags: images, image, attachments, attachment, Smush.it
 Requires at least: 3.5
-Tested up to: 3.8.1
+Tested up to: 3.9.1
 Stable tag: 1.6.5.4
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
