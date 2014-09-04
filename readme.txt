@@ -4,9 +4,9 @@ Version: 1.6.5.4
 Author: WPMU DEV
 Author URI: http://premium.wpmudev.org
 Contributors: WPMUDEV, alexdunae
-Tags: Attachment,Attachments,Compress,Compress Image File,Compress Image Size,Compress JPG,Compressed JPG, Compression Image,Image,Images,JPG,Optimise,Optimize,Photo,Photos,Pictures,PNG,Reduce Image Size,Smush,Smush.it,Upload,WordPress Compression,WordPress Image Tool,Yahoo, Yahoo Smush.it
+Tags: Compress, Image Files, Compress Image Size,Compress JPG, Photo Optimization, Optimize Photos, Smush, Smush.it, Yahoo Smush.it
 Requires at least: 3.5
-Tested up to: 3.9.1
+Tested up to: 4.0
 Stable tag: 1.6.5.4
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
