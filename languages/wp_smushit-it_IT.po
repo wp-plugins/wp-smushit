@@ -1,4 +1,4 @@
-# Copyright (C) 2013 WP Smush.it
+# Copyright (C) 2015 WP Smush.it
 # This file is distributed under the same license as the WP Smush.it package.
 msgid ""
 msgstr ""

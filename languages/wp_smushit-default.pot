@@ -1,270 +1,308 @@
-# Translation of the WordPress plugin WP Smush.it 1.6.5.2 by WPMU DEV.
-# Copyright (C) 2013 WPMU DEV
+# Translation of the WordPress plugin WP Smush.it 1.7 by WPMU DEV.
+# Copyright (C) 2015 WP Smush.it
 # This file is distributed under the same license as the WP Smush.it package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Smush.it 1.6.5.2\n"
+"Project-Id-Version: WP Smush.it 1.7\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/wp-smushit\n"
-"POT-Creation-Date: 2013-09-02 08:12-0500\n"
-"PO-Revision-Date: 2013-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2015-01-14 08:39:56+00:00\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Umesh Kumar <umeshsingla05@gmail.com>\n"
+"Language-Team: WPMU Dev <http://premium.wpmudev.org/>\n"
 
-#: wp-smushit.php:110
-msgid "Use Smush.it on upload?"
+#: lib/class-wp-smushit-admin.php:91
+msgid "Smushing in Progress"
 msgstr ""
 
-#: wp-smushit.php:113
-msgid "How many seconds should we wait for a response from Smush.it?"
+#: lib/class-wp-smushit-admin.php:92
+msgid "All done!"
 msgstr ""
 
-#: wp-smushit.php:116
-msgid "Enable debug processing"
+#. #-#-#-#-#  plugin.pot (WP Smush.it 1.7)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: lib/class-wp-smushit-admin.php:112
+msgid "WP Smush.it"
 msgstr ""
 
-#: wp-smushit.php:131
-msgid "Automatically process on upload"
+#: lib/class-wp-smushit-admin.php:117
+msgid "Settings"
 msgstr ""
 
-#: wp-smushit.php:132
-msgid "Do not process on upload"
-msgstr ""
-
-#: wp-smushit.php:136
-#, php-format
+#: lib/class-wp-smushit-admin.php:145
 msgid "Temporarily disabled until %s"
 msgstr ""
 
-#: wp-smushit.php:150
+#: lib/class-wp-smushit-admin.php:162
+msgid "Smush images on upload"
+msgstr ""
+
+#: lib/class-wp-smushit-admin.php:165
+msgid "Automatically process on upload"
+msgstr ""
+
+#: lib/class-wp-smushit-admin.php:166
+msgid "Do not process on upload"
+msgstr ""
+
+#: lib/class-wp-smushit-admin.php:176
+msgid "API Timeout"
+msgstr ""
+
+#: lib/class-wp-smushit-admin.php:182
+msgid "Enforce home URL"
+msgstr ""
+
+#: lib/class-wp-smushit-admin.php:185
+msgid ""
+"By default the plugin will enforce that the image URL is the same domain as "
+"the home. If you are using a sub-domain pointed to this same host or an "
+"external Content Delivery Network (CDN) you want to unset this option."
+msgstr ""
+
+#: lib/class-wp-smushit-admin.php:189
+msgid "Smushit Debug"
+msgstr ""
+
+#: lib/class-wp-smushit-admin.php:192
 msgid ""
 "If you are having trouble with the plugin enable this option can reveal some "
 "information about your system needed for support."
 msgstr ""
 
-#: wp-smushit.php:195
-msgid "Bulk WP Smush.it"
+#: lib/class-wp-smushit-admin.php:200
+msgid "Save Changes"
 msgstr ""
 
-#: wp-smushit.php:199
+#: lib/class-wp-smushit-admin.php:271
+msgid ""
+" %d of those images %s <b>over 1Mb</b> and <b>can not be compressed using "
+"the free version of the plugin.</b>"
+msgstr ""
+
+#: lib/class-wp-smushit-admin.php:277
+msgid "Smush in Bulk"
+msgstr ""
+
+#: lib/class-wp-smushit-admin.php:281
 msgid "<p>You don't appear to have uploaded any images yet.</p>"
 msgstr ""
 
-#: wp-smushit.php:203
+#: lib/class-wp-smushit-admin.php:284
+msgid "Upgrade to WP Smush PRO"
+msgstr ""
+
+#: lib/class-wp-smushit-admin.php:285
 msgid ""
-"<p>This tool will run all of the images in your media library through the WP "
-"Smush.it web service. Any image already processed will not be reprocessed. "
-"Any new images or unsuccessful attempts will be processed.</p>"
+"<h4>WP Smush.it uses Yahoo! Smush.it API. As such, there are a few "
+"restrictions:</h4>"
 msgstr ""
 
-#: wp-smushit.php:204
+#: lib/class-wp-smushit-admin.php:288
 msgid ""
-"<p>As part of the Yahoo! Smush.it API this plugin wil provide a URL to each "
-"of your images to be processed. The Yahoo! service will download the image "
-"via the URL. The Yahoo Smush.it service will then return a URL to this "
-"plugin of the new version of the image. This image will be downloaded and "
-"replace the original image on your server.</p>"
+"Each image MUST be less than 1Mb in size.  %s and use our servers for images "
+"upto 5Mb."
 msgstr ""
 
-#: wp-smushit.php:206
-msgid "<p>Limitations of using the Yahoo Smush.it API</p>"
-msgstr ""
-
-#: wp-smushit.php:209
+#: lib/class-wp-smushit-admin.php:289
 msgid ""
-"The image MUST be less than 1 megabyte in size. This is a limit of the "
-"Yahoo! service not this plugin."
+"Images MUST be accessible via a non-https URL. The Yahoo! Smush.it service "
+"will not handle https:// image URLs. %s to allow https URLs"
 msgstr ""
 
-#: wp-smushit.php:210
+#: lib/class-wp-smushit-admin.php:290
 msgid ""
-"The image MUST be accessible via a non-https URL. The Yahoo! Smush.it "
-"service will not handle https:// image URLs. This is a limit of the Yahoo! "
-"service not this plugin."
+"Smushing images in bulk can sometimes cause time-outs. %s and use our "
+"reliable server to prevent time-outs."
 msgstr ""
 
-#: wp-smushit.php:211
+#: lib/class-wp-smushit-admin.php:293
 msgid ""
-"The image MUST publicly accessible server. As the Yahoo! Smush.it service "
-"needs to download the image via a URL the image needs to be on a public "
-"server and not a local development system. This is a limit of the "
-"Yahoo! service not this plugin."
+"<strong>WP Smush PRO</strong> allows you to smush images up to 5Mb.<br /> "
+"Fast, reliable & time-out free. <a href='http://premium.wpmudev.org/projects/"
+"wp-smush-pro'>Find Out more &raquo;</a>"
 msgstr ""
 
-#: wp-smushit.php:212
+#: lib/class-wp-smushit-admin.php:305
+msgid "<p>We found %d images in your media library. %s </p>"
+msgstr ""
+
+#: lib/class-wp-smushit-admin.php:307
 msgid ""
-"The image MUST be local to the site. This plugin cannot update images stored "
-"on Content Delivery Networks (CDN)"
+"<p><b style='color: red;'>Please beware</b>, <b>smushing a large number of "
+"images can take a long time.</b></p>"
 msgstr ""
 
-#: wp-smushit.php:215
-#, php-format
+#: lib/class-wp-smushit-admin.php:309
 msgid ""
-"<p><strong>This is an experimental feature.</strong> Please post any "
-"feedback to the %s.</p>"
+"<p><b>You can not leave this page, until all images have been received back, "
+"and you see a success message.</b></p>"
 msgstr ""
 
-#: wp-smushit.php:215
-msgid "WordPress WP Smush.it forums"
-msgstr ""
-
-#: wp-smushit.php:219
-#, php-format
+#: lib/class-wp-smushit-admin.php:311
 msgid ""
-"<p>We found %d images in your media library. Be forewarned, <strong>it will "
-"take <em>at least</em> %d minutes</strong> to process all these images if "
-"they have never been smushed before.</p>"
+"Click below to smush all your images. Alternatively, you can smush your "
+"images individually or as a bulk action from your <a href='%s'>Media "
+"Library</a>"
 msgstr ""
 
-#: wp-smushit.php:222
-msgid "Run all my images through WP Smush.it right now"
+#: lib/class-wp-smushit-admin.php:318
+msgid "Bulk Smush all my images"
 msgstr ""
 
-#: wp-smushit.php:223
+#: lib/class-wp-smushit-admin.php:319
 msgid ""
 "<p><em>N.B. If your server <tt>gzip</tt>s content you may not see the "
 "progress updates as your files are processed.</em></p>"
 msgstr ""
 
-#: wp-smushit.php:226
+#: lib/class-wp-smushit-admin.php:322
 msgid ""
-"<p>DEBUG mode is currently enabled. To disable see the Settings > Media page."
-"</p>"
+"<p>DEBUG mode is currently enabled. To disable uncheck the smushit debug "
+"option.</p>"
 msgstr ""
 
-#: wp-smushit.php:234
-msgid "Cheatin&#8217; uh?"
+#: lib/class-wp-smushit-admin.php:362
+msgid ""
+"Smushing <span id=\"smushed-count\">1</span> of <span id=\"smushing-total\">"
+"%d</span>"
 msgstr ""
 
-#: wp-smushit.php:241
-#, php-format
-msgid "<p>Processing <strong>%s</strong>&hellip;<br />"
+#: lib/class-wp-smushit-admin.php:403
+msgid "Nonce verification failed"
 msgstr ""
 
-#: wp-smushit.php:251 wp-smushit.php:409
-msgid "No savings"
+#: lib/error_log.php:9
+msgid "Error Log"
 msgstr ""
 
-#: wp-smushit.php:252 wp-smushit.php:264
-msgid "<strong>already smushed</strong>"
+#: lib/error_log.php:13
+msgid "Purge log"
 msgstr ""
 
-#: wp-smushit.php:280
-msgid "<hr /></p>Smush.it finished processing.</p>"
+#: lib/error_log.php:17 lib/error_log.php:25 lib/error_log.php:55
+#: lib/error_log.php:62
+msgid "Date"
 msgstr ""
 
-#: wp-smushit.php:293
+#: lib/error_log.php:18 lib/error_log.php:26
+msgid "Function"
+msgstr ""
+
+#: lib/error_log.php:19 lib/error_log.php:27
+msgid "Image"
+msgstr ""
+
+#: lib/error_log.php:20 lib/error_log.php:28
+msgid "Info"
+msgstr ""
+
+#: lib/error_log.php:56 lib/error_log.php:63
+msgid "User"
+msgstr ""
+
+#: lib/error_log.php:57 lib/error_log.php:64
+msgid "Message"
+msgstr ""
+
+#: lib/error_log.php:72
+msgid "Unknown"
+msgstr ""
+
+#: wp-smushit.php:114
 msgid "You don't have permission to work with uploaded files."
 msgstr ""
 
-#: wp-smushit.php:297
+#: wp-smushit.php:118
 msgid "No attachment ID was provided."
 msgstr ""
 
-#: wp-smushit.php:323
+#: wp-smushit.php:146
 msgid "File path is empty"
 msgstr ""
 
-#: wp-smushit.php:327
+#: wp-smushit.php:150
 msgid "File URL is empty"
 msgstr ""
 
-#: wp-smushit.php:333
-msgid "Did not smush due to previous errors"
+#: wp-smushit.php:156
+msgid "Did not Smush.it due to previous errors"
 msgstr ""
 
-#: wp-smushit.php:338
-#, php-format
-msgid "Could not find <span class='code'>%s</span>"
+#: wp-smushit.php:161
+msgid "ERROR: Could not find <span class='code'>%s</span>"
 msgstr ""
 
-#: wp-smushit.php:343
-#, php-format
-msgid "<span class='code'>%s</span> is not writable"
+#: wp-smushit.php:166
+msgid "ERROR: <span class='code'>%s</span> is not writable"
 msgstr ""
 
-#: wp-smushit.php:348
-#, php-format
+#: wp-smushit.php:171
 msgid ""
-"<span style=\"color:#FF0000;\">Skipped (%s) Unable to Smush due to Yahoo 1mb "
-"size limits. See <a href=\"http://developer.yahoo.com/yslow/smushit/faq."
-"html#faq_restrict\">FAQ</a></span>"
+"ERROR: <span style=\"color:#FF0000;\">Skipped (%s) Unable to Smush due to "
+"Yahoo 1mb size limits. See <a href=\"http://developer.yahoo.com/yslow/"
+"smushit/faq.html#faq_restrict\">FAQ</a></span>"
 msgstr ""
 
-#: wp-smushit.php:359
-#, php-format
+#: wp-smushit.php:204
 msgid ""
-"<span class='code'>%s</span> must be within the website directory (<span "
-"class='code'>%s</span>)"
+"ERROR: <span class='code'>%s</span> must be within the website home URL "
+"(<span class='code'>%s</span>)"
 msgstr ""
 
-#: wp-smushit.php:371
-#, php-format
-msgid ""
-"<span class='code'>%s</span> must be within the website home URL (<span "
-"class='code'>%s</span>)"
+#: wp-smushit.php:217
+msgid "ERROR: posting to Smush.it"
 msgstr ""
 
-#: wp-smushit.php:382
-msgid "Error posting to Smush.it"
-msgstr ""
-
-#: wp-smushit.php:388 wp-smushit.php:406
+#: wp-smushit.php:223 wp-smushit.php:252
 msgid "Bad response from Smush.it"
 msgstr ""
 
-#: wp-smushit.php:412
+#: wp-smushit.php:256
+msgid "No savings"
+msgstr ""
+
+#: wp-smushit.php:260
 msgid "Smush.it error: "
 msgstr ""
 
-#: wp-smushit.php:412
+#: wp-smushit.php:260
 msgid "unknown error"
 msgstr ""
 
-#: wp-smushit.php:413
-#, php-format
+#: wp-smushit.php:261
 msgid ""
 " while processing <span class='code'>%s</span> (<span class='code'>%s</span>)"
 msgstr ""
 
-#: wp-smushit.php:429
-#, php-format
+#: wp-smushit.php:279
 msgid "Error downloading file (%s)"
 msgstr ""
 
-#: wp-smushit.php:433
-#, php-format
-msgid "Unable to locate Smuch.it downloaded file (%s)"
+#: wp-smushit.php:283
+msgid "Unable to locate Smushed file (%s)"
 msgstr ""
 
-#: wp-smushit.php:447
-#, php-format
+#: wp-smushit.php:297
 msgid "Reduced by %01.1f%% (%s)"
 msgstr ""
 
-#: wp-smushit.php:545
+#: wp-smushit.php:393
 msgid "WP Smush.it requires WordPress 2.8 or greater"
 msgstr ""
 
-#: wp-smushit.php:585
+#: wp-smushit.php:435
 msgid "Re-smush"
 msgstr ""
 
-#: wp-smushit.php:588
+#: wp-smushit.php:438
 msgid "Not processed"
 msgstr ""
 
-#: wp-smushit.php:591
+#: wp-smushit.php:441
 msgid "Smush.it now!"
-msgstr ""
-
-#. Plugin Name of the plugin/theme
-msgid "WP Smush.it"
 msgstr ""
 
 #. Plugin URI of the plugin/theme

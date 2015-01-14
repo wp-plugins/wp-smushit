@@ -1,7 +1,7 @@
 # Translation of the WordPress plugin WP Smush.it 1.6.5.2 by WPMU DEV.
-# Copyright (C) 2013 WPMU DEV
+# Copyright (C) 2015 WPMU DEV
 # This file is distributed under the same license as the WP Smush.it package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
 #
 msgid ""
 msgstr ""
