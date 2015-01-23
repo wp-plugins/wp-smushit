@@ -10,7 +10,7 @@ Tested up to: 4.1
 Stable tag: 1.7
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
-Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
+Improve performance and get faster load times by optimizing image files with <a href="http://smush.it/">Smush.it</a> for WordPress – "It's the best plugin of its kind."
 
 == Description ==
 
@@ -19,7 +19,6 @@ WP Smush.it strips hidden, bulky information from your images, reducing the file
 Heavy image files may be slowing down your site without you even knowing it. WP Smush.it meticulously scans every image you upload – or have already added to your site – and cuts all the unnecessary data for you.
 
 ★★★★★
-
 “I had no idea that my page load time was being dragged down by the images. The plugin nearly halved the time it took.” - <a href="http://profiles.wordpress.org/karlcw">karlcw</a>
 
 Install WP Smush.it and find out why it's the most popular image optimization plugin for WordPress available today with over 1 million downloads.
