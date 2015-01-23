@@ -4,7 +4,7 @@ Version: 1.7
 Author: WPMU DEV
 Author URI: http://premium.wpmudev.org
 Contributors: WPMUDEV, alexdunae
-Tags: Attachment,Attachments,Compress,Compress Image File,Compress Image Size,Compress JPG,Compressed JPG, Compression Image,Image,Images,JPG,Optimise,Optimize,Photo,Photos,Pictures,PNG,Reduce Image Size,Smush,Smush.it,Upload,WordPress Compression,WordPress Image Tool,Yahoo, Yahoo Smush.it
+Tags: Compress,Images,Compression,Optimise,Optimize,Photo,Photos,Pictures,Smush,Smush.it,Upload,Yahoo,Yahoo Smush.it
 Requires at least: 3.5
 Tested up to: 4.1
 Stable tag: 1.7
@@ -14,41 +14,40 @@ Reduce image file sizes and improve performance using the <a href="http://smush.
 
 == Description ==
 
-Yahoo's excellent <a href="http://developer.yahoo.com/performance/">Exceptional Performance series</a> recommends <a href="http://developer.yahoo.com/performance/rules.html#opt_images">optimizing images</a> in several lossless ways:
+WP Smush.it strips hidden, bulky information from your images, reducing the file size without losing quality. The faster your site loads, the more Google, Bing, Yahoo and other search engines will like it.
 
-* stripping meta data from JPEGs
-* optimizing JPEG compression
-* converting certain GIFs to indexed PNGs
-* stripping the un-used colours from indexed images
+Heavy image files may be slowing down your site without you even knowing it. WP Smush.it meticulously scans every image you upload – or have already added to your site – and cuts all the unnecessary data for you.
 
-<a href="http://smush.it/">Smush.it</a> offers an API that performs these optimizations (except for stripping JPEG meta data) automatically, and this plugin seamlessly integrates Smush.it with WordPress.
+★★★★★
 
-= Dear Smushers: WPMU DEV has taken over maintenance and support for WP Smush.it =
-With the backing of <a href="http://premium.wpmudev.org/">WPMU DEV's professional WordPress team</a> you can expect faster support, bug-fixes, and new features!
+“I had no idea that my page load time was being dragged down by the images. The plugin nearly halved the time it took.” - <a href="http://profiles.wordpress.org/karlcw">karlcw</a>
 
-= How does it work? =
-Every image you add to a page or post will be automatically run through Smush.it behind the scenes.  You don&rsquo;t have to do anything different.
+Install WP Smush.it and find out why it's the most popular image optimization plugin for WordPress available today with over 1 million downloads.
 
-= Existing images =
-You can also run your existing images through Smush.it via the WordPress `Media Library`.  Click on the `Smush.it now!` link for any image you'd like to smush.
+<blockquote>
+<h4>If you like WP Smush.it, you'll love WP Smush Pro</h4>
 
-As of version 1.4.0 there is a new, experimental `Bulk Smush.it` feature.  You can find the link under the `Media Library` tab.
+<a href="http://premium.wpmudev.org/project/wp-smush-pro/">WP Smush Pro</a> gives you everything you'll find in WP Smush.it and more. The pro version includes:
+<ul>
+	<li>Access better quality, higher performing WPMU DEV dedicated smushing servers</li>
+	<li>Smush images up to 5MB (WP Smush.it is limited to 1MB)</li>
+	<li>No more batch smushing dropouts or timeouts (you have your own dedicated servers)</li>
+	<li>Works with HTTPS images (WP Smush.it won’t work with HTTPS)</li>
+	<li>24/7/365 support from <a href="http://premium.wpmudev.org/support/">the best WordPress support team on the planet</a></li>
+	<li><a href="http://premium.wpmudev.org/join/">400+ other premium plugins and themes</a> included in your membership</li>
+</ul>
+Upgrade to <a href="http://premium.wpmudev.org/project/wp-smush-pro/">WP Smush Pro</a> and optimize more and larger image files faster and with greater reliability to increase your site’s performance.
+</blockquote>
 
-= Errors =
-
-Sometimes the Smush.it service goes down or is under heavy load. If the plugin has difficulty connecting to Smush.it then automatically smushing is temporarily disabled (currently for 6 hours). You can always re-enable it via the `Media > Settings` screen or manually smush the image from the Media Library.
-
-You can also define how long you want to wait for the Smush.it server to respond.
-
-= Privacy =
-Be sure you&rsquo;re comfortable with Smush.it&rsquo;s privacy policy (found on their <a href="http://info.yahoo.com/legal/us/yahoo/smush_it/smush_it-4378.html">FAQ</a>).
-
-= About Us =
-WPMU DEV is a premium supplier of quality WordPress plugins and themes. For premium support with any WordPress related issues you can join us here:
-<a href="http://premium.wpmudev.org/join/">http://premium.wpmudev.org/join/</a>
-
-Don't forget to stay up to date on everything WordPress from the Internet's number one resource:
-<a href="http://wpmu.org/">http://wpmu.org</a>
+Features available to both WP Smush.it and pro users include:
+<ul>
+	<li>Optimize your images using lossless compression techniques</li>
+	<li>Process JPEG, GIF and PNG image files</li>
+	<li>Compress files 1 MB or smaller</li>
+	<li>Strip unused colours from indexed images</li>
+	<li>Both versions are fully internationalized</li>
+</ul>
+Discover for yourself why WP Smush.it is the most popular free image optimization plugin with more than a million downloads.
 
 
 == Screenshots ==
