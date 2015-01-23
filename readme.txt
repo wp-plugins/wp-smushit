@@ -10,7 +10,7 @@ Tested up to: 4.1
 Stable tag: 1.7
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
-Improve performance and get faster load times by optimizing image files with <a href="http://smush.it/">Smush.it</a> for WordPress – “It's the best plugin of its kind.“
+Improve performance and get faster load times by optimizing image files with <a href="http://smush.it/">Smush.it</a> for WordPress – “It's the best plugin of its kind.”
 
 == Description ==
 
