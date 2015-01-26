@@ -16,7 +16,7 @@ Improve performance and get faster load times by optimizing image files with <a 
 
 WP Smush.it strips hidden, bulky information from your images, reducing the file size without losing quality. The faster your site loads, the more Google, Bing, Yahoo and other search engines will like it.
 
-[youtube https://www.youtube.com/watch?v=pn-NGM2PvtE]
+[youtube https://www.youtube.com/watch?v=_74QFoRb230]
 
 Heavy image files may be slowing down your site without you even knowing it. WP Smush.it meticulously scans every image you upload – or have already added to your site – and cuts all the unnecessary data for you.
 
@@ -37,7 +37,7 @@ Install WP Smush.it and find out why it's the most popular image optimization pl
 	<li>24/7/365 support from <a href="http://premium.wpmudev.org/support/">the best WordPress support team on the planet</a></li>
 	<li><a href="http://premium.wpmudev.org/join/">400+ other premium plugins and themes</a> included in your membership</li>
 </ul>
-<br>
+
 Upgrade to <a href="http://premium.wpmudev.org/project/wp-smush-pro/">WP Smush Pro</a> and optimize more and larger image files faster and with greater reliability to increase your site’s performance.
 </blockquote>
 
