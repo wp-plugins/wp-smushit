@@ -1,13 +1,13 @@
 === WP Smush.it ===
 Plugin Name: WP Smush.it
-Version: 1.7
+Version: 1.7.1
 Author: WPMU DEV
 Author URI: http://premium.wpmudev.org
 Contributors: WPMUDEV, alexdunae
 Tags: Compress,Images,Compression,Optimise,Optimize,Photo,Photos,Pictures,Smush,Smush.it,Upload,Yahoo,Yahoo Smush.it
 Requires at least: 3.5
 Tested up to: 4.1
-Stable tag: 1.7
+Stable tag: 1.7.1
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
 Improve performance and get faster load times by optimizing image files with <a href="http://smush.it/">Smush.it</a> for WordPress – “It's the best plugin of its kind.”
@@ -72,6 +72,9 @@ This will give us a good foundation to start adding some new features!
 
 
 == Changelog ==
+
+= 1.7.1 =
+* Add depreciated warnings about Smush.it outage
 
 = 1.7 =
 * Use Ajax for Bulk Smush to avoid timeouts and internal server error
