@@ -14,6 +14,13 @@ Improve performance and get faster load times by optimizing image files with <a 
 
 == Description ==
 
+<blockquote>
+	According to <a href="http://www.phpied.com/smush-it-is-dead-long-live-smushing/">unofficial but pretty reliable reports</a> Yahoo has stopped maintaining Smush.it :(
+
+	However, all is not lost! We are working like maniacs here at WPMU DEV to bring you a free, more reliable and better free smushing experience built off of our pro version of the plugin and wrapped up in the next update. We hope to have it available to you very, very soon... in the meantime please stay with us, it'll be worth it, promise. <br />
+	<em>- James, WPMU DEV, 6th April</em>
+</blockquote>
+
 WP Smush.it strips hidden, bulky information from your images, reducing the file size without losing quality. The faster your site loads, the more Google, Bing, Yahoo and other search engines will like it.
 
 [youtube https://www.youtube.com/watch?v=_74QFoRb230]
