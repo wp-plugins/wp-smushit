@@ -4,7 +4,7 @@ Plugin Name: WP Smush.it
 Plugin URI: http://wordpress.org/extend/plugins/wp-smushit/
 Description: Reduce image file sizes and improve performance using the <a href="http://smush.it/">Smush.it</a> API within WordPress.
 Author: WPMU DEV
-Version: 1.7.1
+Version: 1.7.1.1
 Author URI: http://premium.wpmudev.org/
 Textdomain: wp_smushit
 */
@@ -84,7 +84,7 @@ if ( ! class_exists( 'WpSmushit' ) ) {
 			 * Hooks
 			 */
 			if ( WP_SMUSHIT_AUTO == WP_SMUSHIT_AUTO_OK ) {
-				add_filter( 'wp_generate_attachment_metadata', array( &$this, 'resize_from_meta_data' ), 10, 2 );
+//				add_filter( 'wp_generate_attachment_metadata', array( &$this, 'resize_from_meta_data' ), 10, 2 );
 			}
 			add_filter( 'manage_media_columns', array( &$this, 'columns' ) );
 			add_action( 'manage_media_custom_column', array( &$this, 'custom_column' ), 10, 2 );
@@ -141,6 +141,8 @@ if ( ! class_exists( 'WpSmushit' ) ) {
 		 */
 		function do_smushit( $attachment_id, $file_path = '', $file_url = '' ) {
 			global $log;
+			//API calls disabled until new Smush comes back
+			return __( "Smush service currently unavailable", WP_SMUSHIT_DOMAIN);
 
 			if ( empty( $file_path ) ) {
 				return __( "File path is empty", WP_SMUSHIT_DOMAIN );
