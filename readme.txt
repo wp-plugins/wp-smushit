@@ -3,8 +3,8 @@ Plugin Name: WP Smush
 Version: 2.0.1
 Author: WPMU DEV
 Author URI: http://premium.wpmudev.org/
-Contributors: WPMUDEV, alexdunane
-Tags: Attachment,Attachments,Compress,Compress Image File,Compress Image Size,Compress JPG,Compressed JPG, Compression Image,Image,Images,JPG,Optimise,Optimize,Photo,Photos,Pictures,PNG,Reduce Image Size,Smush,Smush.it,Upload,WordPress Compression,WordPress Image Tool,Yahoo, Yahoo Smush.it
+Contributors: WPMUDEV, alexdunae
+Tags: Attachment,Attachments,Compress,Compress Image File,Compress Image Size,Compress JPG,Compressed JPG, Compression
 Requires at least: 3.5
 Tested up to: 4.2
 Stable tag: 2.0.1
