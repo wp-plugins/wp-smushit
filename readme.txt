@@ -16,7 +16,7 @@ Reduce image file sizes, improve performance and boost your SEO using the free <
 
 <blockquote>
 <strong>All new massively improved smushing!</strong>
-
+<br />
 Try now for a completely new, incredibly powerful and 100% free images smushing process, brought to you by the team at WPMU DEV!
 </blockquote>
 
