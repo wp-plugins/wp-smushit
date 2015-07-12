@@ -223,6 +223,15 @@ if ( ! class_exists( 'WpSmush' ) ) {
 				unlink( $tempfile );
 			}
 
+			$fixedFilePermissions = chmod($file_path, 0644);
+
+			if ($fixedFilePermissions) {
+				// great!
+			}
+			else {
+				// damn!
+			}
+
 			return $response;
 		}
 
